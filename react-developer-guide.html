@@ -1,0 +1,3453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React.js Frontend Developer — Comprehensive Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --accent: #7c3aed;
+            --accent-light: #ede9fe;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            body { font-size: 11px; line-height: 1.5; }
+            .cover-page { page-break-after: always; }
+            .toc { page-break-after: always; }
+            .section { page-break-before: always; }
+            .no-break { page-break-inside: avoid; }
+            pre { font-size: 9px !important; }
+            .page-footer { display: block !important; }
+            .sidebar { display: none !important; }
+            .sidebar-toggle { display: none !important; }
+            .main-content { margin-left: 0 !important; }
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: #0f172a;
+            color: #94a3b8;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            scrollbar-width: thin;
+            scrollbar-color: #334155 #0f172a;
+        }
+
+        .sidebar::-webkit-scrollbar { width: 5px; }
+        .sidebar::-webkit-scrollbar-track { background: #0f172a; }
+        .sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+
+        .sidebar-brand {
+            padding: 24px 22px 18px;
+            border-bottom: 1px solid #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            background: #0f172a;
+            z-index: 2;
+        }
+
+        .sidebar-brand svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: #e2e8f0;
+            line-height: 1.3;
+        }
+
+        .sidebar-brand-sub {
+            font-size: 10px;
+            font-weight: 500;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .sidebar-nav {
+            padding: 12px 0 30px;
+        }
+
+        .sidebar-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #475569;
+            padding: 18px 22px 8px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 22px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-link:hover {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .sidebar-link.active {
+            color: #60a5fa;
+            background: rgba(96, 165, 250, 0.08);
+            border-left-color: #60a5fa;
+        }
+
+        .sidebar-link .sb-num {
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 24px;
+            color: #475569;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .sidebar-link.active .sb-num {
+            color: #60a5fa;
+        }
+
+        .sidebar-link.sb-sub {
+            padding-left: 56px;
+            font-size: 12px;
+            font-weight: 400;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+        .sidebar-link.sb-sub .sb-num {
+            font-size: 10px;
+            min-width: 28px;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 8px 22px;
+        }
+
+        /* ===== SIDEBAR TOGGLE (Mobile) ===== */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1100;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: background 0.2s;
+        }
+
+        .sidebar-toggle:hover { background: #1e293b; }
+
+        .sidebar-toggle svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+
+        .sidebar-overlay.visible {
+            display: block;
+        }
+
+        /* ===== MAIN CONTENT (pushed right by sidebar) ===== */
+        .main-content {
+            margin-left: 280px;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== RESPONSIVE: Collapse sidebar on < 1024px ===== */
+        @media (max-width: 1023px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* ===== COVER PAGE ===== */
+        .cover-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4338ca 60%, #6366f1 100%);
+            color: white;
+            text-align: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.2) 0%, transparent 40%);
+            z-index: 0;
+        }
+
+        .cover-content { position: relative; z-index: 1; max-width: 700px; }
+
+        .cover-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #c7d2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover-subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+        }
+
+        .cover-meta {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .cover-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .cover-meta-item svg {
+            width: 16px;
+            height: 16px;
+            fill: rgba(255,255,255,0.6);
+        }
+
+        .react-logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 30px;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 50px;
+        }
+
+        /* ===== TABLE OF CONTENTS ===== */
+        .toc {
+            padding: 50px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .toc h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .toc-list { list-style: none; }
+
+        .toc-item {
+            display: flex;
+            align-items: baseline;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: color 0.2s;
+        }
+
+        .toc-item:hover { color: var(--primary); }
+
+        .toc-number {
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 40px;
+            font-size: 16px;
+        }
+
+        .toc-title {
+            flex: 1;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .toc-page {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .toc-sub {
+            padding-left: 40px;
+        }
+
+        .toc-sub .toc-number {
+            font-size: 13px;
+            min-width: 50px;
+            color: var(--accent);
+        }
+
+        .toc-sub .toc-title { font-size: 13px; font-weight: 400; }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 50px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid;
+        }
+
+        .section-number {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text);
+        }
+
+        /* Color Themes per Section */
+        .theme-blue .section-header { border-color: var(--primary); }
+        .theme-blue .section-number { color: var(--primary); }
+
+        .theme-purple .section-header { border-color: var(--accent); }
+        .theme-purple .section-number { color: var(--accent); }
+
+        .theme-green .section-header { border-color: var(--success); }
+        .theme-green .section-number { color: var(--success); }
+
+        .theme-orange .section-header { border-color: var(--warning); }
+        .theme-orange .section-number { color: var(--warning); }
+
+        .theme-red .section-header { border-color: var(--danger); }
+        .theme-red .section-number { color: var(--danger); }
+
+        /* ===== SUBSECTION ===== */
+        .subsection {
+            margin-bottom: 35px;
+        }
+
+        .subsection-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subsection-title .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== CODE BLOCKS ===== */
+        pre {
+            background: var(--code-bg);
+            color: var(--code-text);
+            border-radius: 10px;
+            padding: 20px 24px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.6;
+            margin: 15px 0 20px;
+            border: 1px solid #313244;
+            position: relative;
+        }
+
+        pre .lang-tag {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #6c7086;
+            letter-spacing: 1px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .inline-code {
+            background: #f1f5f9;
+            color: #be185d;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 12.5px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Syntax Highlighting */
+        .kw { color: #cba6f7; }     /* keyword */
+        .fn { color: #89b4fa; }     /* function */
+        .str { color: #a6e3a1; }    /* string */
+        .cm { color: #6c7086; font-style: italic; }  /* comment */
+        .num { color: #fab387; }    /* number */
+        .op { color: #89dceb; }     /* operator */
+        .tag { color: #f38ba8; }    /* JSX tag */
+        .attr { color: #89b4fa; }   /* attribute */
+        .type { color: #f9e2af; }   /* type */
+        .bool { color: #fab387; }   /* boolean */
+        .imp { color: #cba6f7; }    /* import */
+
+        /* ===== INFO BOXES ===== */
+        .info-box {
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin: 15px 0 20px;
+            border-left: 4px solid;
+        }
+
+        .info-box.tip {
+            background: var(--success-light);
+            border-color: var(--success);
+        }
+
+        .info-box.warning {
+            background: var(--warning-light);
+            border-color: var(--warning);
+        }
+
+        .info-box.note {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .info-box.important {
+            background: var(--accent-light);
+            border-color: var(--accent);
+        }
+
+        .info-box-title {
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .info-box.tip .info-box-title { color: var(--success); }
+        .info-box.warning .info-box-title { color: var(--warning); }
+        .info-box.note .info-box-title { color: var(--primary); }
+        .info-box.important .info-box-title { color: var(--accent); }
+
+        .info-box p { margin-bottom: 0; font-size: 13px; }
+
+        /* ===== LISTS ===== */
+        ul, ol {
+            margin: 10px 0 15px 20px;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 6px;
+            padding-left: 5px;
+        }
+
+        /* ===== TABLES ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 20px;
+            font-size: 13px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        thead th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr:nth-child(even) { background: var(--bg-alt); }
+        tbody tr:hover { background: var(--primary-light); }
+
+        /* ===== DIAGRAM BOX ===== */
+        .diagram-box {
+            background: var(--bg-alt);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 15px 0 20px;
+            text-align: center;
+        }
+
+        .diagram-box .diagram-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        .flow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        .flow-box {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--primary);
+        }
+
+        .flow-box.accent {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .flow-box.success {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .flow-arrow {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        /* ===== BADGES ===== */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-blue { background: var(--primary-light); color: var(--primary); }
+        .badge-purple { background: var(--accent-light); color: var(--accent); }
+        .badge-green { background: var(--success-light); color: var(--success); }
+
+        /* ===== SEPARATOR ===== */
+        hr {
+            border: none;
+            height: 1px;
+            background: var(--border);
+            margin: 30px 0;
+        }
+
+        /* ===== FILE HEADER ===== */
+        .file-header {
+            background: #181825;
+            color: #bac2de;
+            padding: 8px 16px;
+            border-radius: 10px 10px 0 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #313244;
+            border-bottom: none;
+        }
+
+        .file-header + pre {
+            border-radius: 0 0 10px 10px;
+            margin-top: 0;
+        }
+
+        .file-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #f38ba8; }
+        .dot-yellow { background: #f9e2af; }
+        .dot-green { background: #a6e3a1; }
+
+        /* ===== FOOTER ===== */
+        .doc-footer {
+            text-align: center;
+            padding: 40px 50px;
+            color: var(--text-muted);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* ===== KEY-VALUE GRID ===== */
+        .kv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0 20px;
+        }
+
+        .kv-item {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 18px;
+        }
+
+        .kv-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .kv-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Output block */
+        .output-block {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #166534;
+            margin: 10px 0 20px;
+        }
+
+        .output-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #15803d;
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR TOGGLE (Mobile) ===== -->
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">
+    <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ===== SIDEBAR NAVIGATION ===== -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="8" fill="#61DAFB"/>
+            <ellipse cx="50" cy="50" rx="45" ry="18" fill="none" stroke="#61DAFB" stroke-width="2.5"/>
+            <ellipse cx="50" cy="50" rx="45" ry="18" fill="none" stroke="#61DAFB" stroke-width="2.5" transform="rotate(60 50 50)"/>
+            <ellipse cx="50" cy="50" rx="45" ry="18" fill="none" stroke="#61DAFB" stroke-width="2.5" transform="rotate(120 50 50)"/>
+        </svg>
+        <div>
+            <div class="sidebar-brand-text">React.js Developer</div>
+            <div class="sidebar-brand-sub">Comprehensive Guide</div>
+        </div>
+    </div>
+    <div class="sidebar-nav">
+        <div class="sidebar-section-label">Key Responsibilities</div>
+
+        <a href="#ch1" class="sidebar-link" data-target="ch1">
+            <span class="sb-num">01</span> Scalable Components
+        </a>
+        <a href="#ch1-1" class="sidebar-link sb-sub" data-target="ch1-1">
+            <span class="sb-num">1.1</span> Atomic Design
+        </a>
+        <a href="#ch1-2" class="sidebar-link sb-sub" data-target="ch1-2">
+            <span class="sb-num">1.2</span> Full Component Example
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="#ch2" class="sidebar-link" data-target="ch2">
+            <span class="sb-num">02</span> API Integration & Data Flow
+        </a>
+        <a href="#ch2-1" class="sidebar-link sb-sub" data-target="ch2-1">
+            <span class="sb-num">2.1</span> Custom Hook: useApi
+        </a>
+        <a href="#ch2-2" class="sidebar-link sb-sub" data-target="ch2-2">
+            <span class="sb-num">2.2</span> Axios Interceptors
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="#ch3" class="sidebar-link" data-target="ch3">
+            <span class="sb-num">03</span> Clean & Reusable Code
+        </a>
+        <a href="#ch3-1" class="sidebar-link sb-sub" data-target="ch3-1">
+            <span class="sb-num">3.1</span> Custom Hooks Pattern
+        </a>
+        <a href="#ch3-2" class="sidebar-link sb-sub" data-target="ch3-2">
+            <span class="sb-num">3.2</span> Compound Components
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="#ch4" class="sidebar-link" data-target="ch4">
+            <span class="sb-num">04</span> Performance & Lazy Loading
+        </a>
+        <a href="#ch4-1" class="sidebar-link sb-sub" data-target="ch4-1">
+            <span class="sb-num">4.1</span> React.lazy & Suspense
+        </a>
+        <a href="#ch4-2" class="sidebar-link sb-sub" data-target="ch4-2">
+            <span class="sb-num">4.2</span> Memoization Patterns
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="#ch5" class="sidebar-link" data-target="ch5">
+            <span class="sb-num">05</span> UI/UX Collaboration
+        </a>
+        <a href="#ch5-1" class="sidebar-link sb-sub" data-target="ch5-1">
+            <span class="sb-num">5.1</span> Design Tokens & Theming
+        </a>
+        <a href="#ch5-2" class="sidebar-link sb-sub" data-target="ch5-2">
+            <span class="sb-num">5.2</span> Responsive Design
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="#ch6" class="sidebar-link" data-target="ch6">
+            <span class="sb-num">06</span> Version Control (Git)
+        </a>
+        <a href="#ch6-1" class="sidebar-link sb-sub" data-target="ch6-1">
+            <span class="sb-num">6.1</span> Branching Strategy
+        </a>
+        <a href="#ch6-2" class="sidebar-link sb-sub" data-target="ch6-2">
+            <span class="sb-num">6.2</span> Conventional Commits
+        </a>
+
+        <div class="sidebar-divider"></div>
+
+        <a href="#ch7" class="sidebar-link" data-target="ch7">
+            <span class="sb-num">07</span> Debugging & Upgrading
+        </a>
+        <a href="#ch7-1" class="sidebar-link sb-sub" data-target="ch7-1">
+            <span class="sb-num">7.1</span> DevTools & Profiler
+        </a>
+        <a href="#ch7-2" class="sidebar-link sb-sub" data-target="ch7-2">
+            <span class="sb-num">7.2</span> Error Boundaries
+        </a>
+
+        <div class="sidebar-section-label" style="margin-top:6px;">Skills & Expertise</div>
+
+        <a href="#ch8" class="sidebar-link" data-target="ch8">
+            <span class="sb-num">08</span> Skills Deep Dive
+        </a>
+        <a href="#ch8-1" class="sidebar-link sb-sub" data-target="ch8-1">
+            <span class="sb-num">8.1</span> JavaScript ES6+
+        </a>
+        <a href="#ch8-2" class="sidebar-link sb-sub" data-target="ch8-2">
+            <span class="sb-num">8.2</span> Hooks & State Mgmt
+        </a>
+        <a href="#ch8-3" class="sidebar-link sb-sub" data-target="ch8-3">
+            <span class="sb-num">8.3</span> Build Tools
+        </a>
+    </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content" id="mainContent">
+
+<!-- ================= COVER PAGE ================= -->
+<div class="cover-page">
+    <div class="cover-content">
+        <svg class="react-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="8" fill="#61DAFB"/>
+            <ellipse cx="50" cy="50" rx="45" ry="18" fill="none" stroke="#61DAFB" stroke-width="2"/>
+            <ellipse cx="50" cy="50" rx="45" ry="18" fill="none" stroke="#61DAFB" stroke-width="2" transform="rotate(60 50 50)"/>
+            <ellipse cx="50" cy="50" rx="45" ry="18" fill="none" stroke="#61DAFB" stroke-width="2" transform="rotate(120 50 50)"/>
+        </svg>
+        <div class="cover-badge">Professional Reference Guide</div>
+        <h1 class="cover-title">React.js Frontend Developer</h1>
+        <p class="cover-subtitle">Comprehensive Guide to Key Responsibilities, Skills & Best Practices with Production-Ready Code Examples</p>
+        <div class="cover-meta">
+            <div class="cover-meta-item">
+                <svg viewBox="0 0 20 20"><path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/></svg>
+                June 2026
+            </div>
+            <div class="cover-meta-item">
+                <svg viewBox="0 0 20 20"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.669 0-3.218.51-4.5 1.385V16"/></svg>
+                8 Chapters · 40+ Examples
+            </div>
+            <div class="cover-meta-item">
+                <svg viewBox="0 0 20 20"><path d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"/></svg>
+                React 18+ / ES2024
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= TABLE OF CONTENTS ================= -->
+<div class="toc">
+    <h2>Table of Contents</h2>
+    <ul class="toc-list">
+        <li><a class="toc-item" href="#ch1">
+            <span class="toc-number">01</span>
+            <span class="toc-title">Scalable Front-End Components with React.js</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch1-1">
+            <span class="toc-number">1.1</span>
+            <span class="toc-title">Atomic Design & Component Architecture</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch1-2">
+            <span class="toc-number">1.2</span>
+            <span class="toc-title">Building a Scalable Component: Full Example</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch2">
+            <span class="toc-number">02</span>
+            <span class="toc-title">RESTful API Integration & Data Flow</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch2-1">
+            <span class="toc-number">2.1</span>
+            <span class="toc-title">Custom Hook: useApi</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch2-2">
+            <span class="toc-number">2.2</span>
+            <span class="toc-title">Axios Interceptors & Error Handling</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch3">
+            <span class="toc-number">03</span>
+            <span class="toc-title">Clean, Modular & Reusable Code</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch3-1">
+            <span class="toc-number">3.1</span>
+            <span class="toc-title">Custom Hooks Pattern</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch3-2">
+            <span class="toc-number">3.2</span>
+            <span class="toc-title">Compound Component Pattern</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch4">
+            <span class="toc-number">04</span>
+            <span class="toc-title">Performance Optimization & Lazy Loading</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch4-1">
+            <span class="toc-number">4.1</span>
+            <span class="toc-title">React.lazy, Suspense & Code Splitting</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch4-2">
+            <span class="toc-number">4.2</span>
+            <span class="toc-title">useMemo, useCallback & React.memo</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch5">
+            <span class="toc-number">05</span>
+            <span class="toc-title">Collaborating with UI/UX Designers</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch5-1">
+            <span class="toc-number">5.1</span>
+            <span class="toc-title">Design Tokens & Theming</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch5-2">
+            <span class="toc-number">5.2</span>
+            <span class="toc-title">Responsive Design Implementation</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch6">
+            <span class="toc-number">06</span>
+            <span class="toc-title">Version Control with Git</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch6-1">
+            <span class="toc-number">6.1</span>
+            <span class="toc-title">Git Branching Strategy & Workflow</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch6-2">
+            <span class="toc-number">6.2</span>
+            <span class="toc-title">Conventional Commits & PR Best Practices</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch7">
+            <span class="toc-number">07</span>
+            <span class="toc-title">Debugging, Troubleshooting & Upgrading</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch7-1">
+            <span class="toc-number">7.1</span>
+            <span class="toc-title">React DevTools & Profiler</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch7-2">
+            <span class="toc-number">7.2</span>
+            <span class="toc-title">Error Boundaries & Logging</span>
+        </a></li>
+
+        <li><a class="toc-item" href="#ch8">
+            <span class="toc-number">08</span>
+            <span class="toc-title">Skills & Expertise Deep Dive</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch8-1">
+            <span class="toc-number">8.1</span>
+            <span class="toc-title">JavaScript ES6+ Mastery</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch8-2">
+            <span class="toc-number">8.2</span>
+            <span class="toc-title">React Hooks & State Management (Redux/Context)</span>
+        </a></li>
+        <li><a class="toc-item toc-sub" href="#ch8-3">
+            <span class="toc-number">8.3</span>
+            <span class="toc-title">Build Tools: Webpack, Babel & Vite</span>
+        </a></li>
+    </ul>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--                  CHAPTER 1: SCALABLE COMPONENTS                        -->
+<!-- ====================================================================== -->
+<div class="section theme-blue" id="ch1">
+    <div class="section-header">
+        <span class="section-number">Chapter 01</span>
+        <h2 class="section-title">Scalable Front-End Components with React.js</h2>
+    </div>
+
+    <p>Building scalable front-end components is the cornerstone of professional React development. A well-designed component system reduces duplication, improves maintainability, and enables teams to ship features faster. This chapter covers the architectural principles and hands-on patterns used in production applications.</p>
+
+    <p>Scalability in the context of React components is <strong>not just about handling more users</strong> — it's about the codebase growing gracefully. As more developers join the team, more features are added, and more pages are built, the complexity should remain manageable. A scalable component architecture ensures that adding a new feature doesn't require modifying 15 different files.</p>
+
+    <h4>Core Principles of Scalable Components</h4>
+    <ul>
+        <li><strong>Single Responsibility Principle (SRP):</strong> Each component should do one thing well. A <span class="inline-code">UserCard</span> displays user info — it doesn't also fetch data, manage modals, and handle routing. When a component does too much, split it into smaller, focused components.</li>
+        <li><strong>Composition over Configuration:</strong> Instead of creating a mega-component with 20 props to cover every use case, create small composable pieces that can be assembled flexibly. Prefer <span class="inline-code">&lt;Card&gt;&lt;CardHeader /&gt;&lt;CardBody /&gt;&lt;/Card&gt;</span> over <span class="inline-code">&lt;Card showHeader headerTitle="..." headerIcon="..." /&gt;</span>.</li>
+        <li><strong>Controlled vs Uncontrolled Components:</strong> A <em>controlled</em> component receives its current value and a change handler via props (parent owns the state). An <em>uncontrolled</em> component manages its own internal state via refs. Controlled components offer more predictability; uncontrolled components are simpler for forms.</li>
+        <li><strong>Props API Design:</strong> Keep props minimal, use sensible defaults, accept <span class="inline-code">children</span> for flexible content, and use TypeScript or PropTypes to document the API contract. A good component is self-documenting.</li>
+        <li><strong>Presentational vs Container Pattern:</strong> Presentational components focus on <em>how things look</em> (UI rendering). Container components focus on <em>how things work</em> (data fetching, state management). While hooks have blurred this boundary, the mental model remains valuable for separation of concerns.</li>
+    </ul>
+
+    <div class="info-box note no-break">
+        <div class="info-box-title">📝 Real-World Impact</div>
+        <p>Companies like Airbnb, Shopify, and Netflix maintain component libraries with hundreds of components. Without strict architectural principles, these systems would become unmaintainable. Airbnb's design system alone has 100+ components used across 50+ projects by 200+ engineers.</p>
+    </div>
+
+    <div id="ch1-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#dbeafe;color:#2563eb;">🏗️</span>
+            1.1 Atomic Design & Component Architecture
+        </h3>
+
+        <p>Atomic Design is a methodology created by Brad Frost for building design systems in a structured, hierarchical way. Inspired by chemistry, it breaks user interfaces into five distinct levels of increasing complexity. Each level builds upon the previous one, creating a clear mental model for organizing components.</p>
+
+        <div class="diagram-box no-break">
+            <div class="diagram-title">Atomic Design Hierarchy</div>
+            <div class="flow-row">
+                <div class="flow-box">Atoms<br><small>Button, Input, Icon</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box accent">Molecules<br><small>SearchBar, FormField</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box success">Organisms<br><small>Header, ProductCard</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">Templates<br><small>DashboardLayout</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box accent">Pages<br><small>HomePage</small></div>
+            </div>
+        </div>
+
+        <h4>Understanding Each Level</h4>
+        <ul>
+            <li><strong>Atoms</strong> — The fundamental building blocks that cannot be broken down further without losing meaning. Examples: Button, Input, Label, Icon, Avatar, Badge, Checkbox. Atoms should be <em>highly reusable</em>, contain <em>zero business logic</em>, and accept styling/behavior via props. Think of them as your design system's vocabulary.</li>
+            <li><strong>Molecules</strong> — Groups of atoms bonded together to form a functional unit. A <span class="inline-code">SearchBar</span> molecule combines an Input atom + Button atom + Icon atom. Molecules are still relatively simple and reusable across different contexts. They represent a single piece of UI functionality.</li>
+            <li><strong>Organisms</strong> — Complex, distinct sections of an interface composed of molecules and atoms. A <span class="inline-code">Header</span> organism might contain a Logo atom, Navigation molecule, SearchBar molecule, and UserMenu molecule. Organisms can contain business logic and are often feature-specific.</li>
+            <li><strong>Templates</strong> — Page-level layouts that define the structural grid without actual content. They arrange organisms into a coherent layout. Think of templates as the wireframe skeleton — they show where the header, sidebar, content area, and footer go, but with placeholder content.</li>
+            <li><strong>Pages</strong> — Specific instances of templates populated with real data and content. This is where everything comes together. Pages are the final deliverable that users interact with.</li>
+        </ul>
+
+        <div class="info-box tip no-break">
+            <div class="info-box-title">💡 Why This Structure Matters</div>
+            <p>Co-locating component files (JSX, CSS, tests, index barrel) together makes each component <strong>portable and self-contained</strong>. You can move a component to another project by copying one folder. The barrel <span class="inline-code">index.js</span> file provides a clean public API: <span class="inline-code">export { default } from './Button';</span></p>
+        </div>
+
+        <h4>Recommended Folder Structure</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            project-structure
+        </div>
+<pre>
+src/
+├── components/
+│   ├── atoms/
+│   │   ├── Button/
+│   │   │   ├── Button.jsx
+│   │   │   ├── Button.module.css
+│   │   │   ├── Button.test.jsx
+│   │   │   └── index.js
+│   │   ├── Input/
+│   │   └── Icon/
+│   ├── molecules/
+│   │   ├── SearchBar/
+│   │   └── FormField/
+│   ├── organisms/
+│   │   ├── Header/
+│   │   └── ProductCard/
+│   └── templates/
+│       └── DashboardLayout/
+├── hooks/
+├── context/
+├── services/
+├── utils/
+└── pages/
+</pre>
+    </div>
+
+    <div id="ch1-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#dbeafe;color:#2563eb;">⚛️</span>
+            1.2 Building a Scalable Component: Full Example
+        </h3>
+
+        <p>A truly scalable component goes beyond just rendering UI — it must handle <strong>accessibility</strong>, <strong>loading states</strong>, <strong>variants</strong>, and <strong>error states</strong> gracefully. Below is a production-ready <span class="inline-code">Button</span> component that demonstrates these principles.</p>
+
+        <h4>Key Design Decisions Explained</h4>
+        <ul>
+            <li><strong>CSS Modules</strong> (<span class="inline-code">.module.css</span>): Class names are locally scoped by default, eliminating global CSS conflicts. Each class gets a unique hash suffix at build time (e.g., <span class="inline-code">.button_x3k2a</span>), so you never worry about naming collisions between components. Works out-of-the-box with CRA and Vite.</li>
+            <li><strong>PropTypes</strong>: Provide runtime type-checking in development. They serve as self-documenting component APIs — any developer can look at the PropTypes block and immediately understand what props the component accepts, their types, and which are required. In TypeScript projects, use interfaces instead.</li>
+            <li><strong>Accessibility (a11y)</strong>: The <span class="inline-code">aria-label</span> attribute provides a text alternative for screen readers. <span class="inline-code">aria-busy</span> communicates loading state to assistive technology. The <span class="inline-code">disabled</span> attribute prevents interaction and is automatically announced by screen readers. Always ensure buttons are keyboard-focusable and have visible focus styles.</li>
+            <li><strong>Variant Pattern</strong>: Instead of creating separate <span class="inline-code">PrimaryButton</span>, <span class="inline-code">SecondaryButton</span>, <span class="inline-code">DangerButton</span> components, a single <span class="inline-code">Button</span> with a <span class="inline-code">variant</span> prop is more maintainable. All variants share the same base logic; only styles differ.</li>
+            <li><strong>Rest Props Spreading</strong> (<span class="inline-code">...rest</span>): Allows consumers to pass any native HTML button attribute (like <span class="inline-code">data-testid</span>, <span class="inline-code">tabIndex</span>, <span class="inline-code">form</span>) without the component needing to explicitly define each one.</li>
+        </ul>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            components/atoms/Button/Button.jsx
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> React <span class="imp">from</span> <span class="str">'react'</span>;
+<span class="imp">import</span> styles <span class="imp">from</span> <span class="str">'./Button.module.css'</span>;
+<span class="imp">import</span> PropTypes <span class="imp">from</span> <span class="str">'prop-types'</span>;
+
+<span class="cm">/**
+ * Reusable Button component with multiple variants,
+ * sizes, loading state, and accessibility support.
+ */</span>
+<span class="kw">const</span> <span class="fn">Button</span> = ({
+  children,
+  variant = <span class="str">'primary'</span>,
+  size = <span class="str">'medium'</span>,
+  isLoading = <span class="bool">false</span>,
+  disabled = <span class="bool">false</span>,
+  onClick,
+  type = <span class="str">'button'</span>,
+  ariaLabel,
+  className = <span class="str">''</span>,
+  ...rest
+}) => {
+  <span class="kw">const</span> classNames = [
+    styles.button,
+    styles[variant],
+    styles[size],
+    isLoading ? styles.loading : <span class="str">''</span>,
+    className,
+  ].<span class="fn">filter</span>(<span class="type">Boolean</span>).<span class="fn">join</span>(<span class="str">' '</span>);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;button</span>
+      <span class="attr">type</span>={type}
+      <span class="attr">className</span>={classNames}
+      <span class="attr">onClick</span>={onClick}
+      <span class="attr">disabled</span>={disabled || isLoading}
+      <span class="attr">aria-label</span>={ariaLabel || <span class="kw">undefined</span>}
+      <span class="attr">aria-busy</span>={isLoading}
+      {...rest}
+    <span class="tag">&gt;</span>
+      {isLoading &amp;&amp; (
+        <span class="tag">&lt;span</span> <span class="attr">className</span>={styles.spinner}
+              <span class="attr">aria-hidden</span>=<span class="str">"true"</span> <span class="tag">/&gt;</span>
+      )}
+      <span class="tag">&lt;span</span> <span class="attr">className</span>={
+        isLoading ? styles.hiddenText : <span class="str">''</span>
+      }<span class="tag">&gt;</span>
+        {children}
+      <span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;/button&gt;</span>
+  );
+};
+
+Button.propTypes = {
+  children:  PropTypes.node.isRequired,
+  variant:   PropTypes.<span class="fn">oneOf</span>([<span class="str">'primary'</span>, <span class="str">'secondary'</span>, <span class="str">'danger'</span>, <span class="str">'ghost'</span>]),
+  size:      PropTypes.<span class="fn">oneOf</span>([<span class="str">'small'</span>, <span class="str">'medium'</span>, <span class="str">'large'</span>]),
+  isLoading: PropTypes.bool,
+  disabled:  PropTypes.bool,
+  onClick:   PropTypes.func,
+  type:      PropTypes.<span class="fn">oneOf</span>([<span class="str">'button'</span>, <span class="str">'submit'</span>, <span class="str">'reset'</span>]),
+  ariaLabel: PropTypes.string,
+  className: PropTypes.string,
+};
+
+<span class="kw">export default</span> Button;
+</pre>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            components/atoms/Button/Button.module.css
+        </div>
+<pre><span class="lang-tag">CSS</span>
+<span class="cm">/* Base button styles */</span>
+.<span class="fn">button</span> {
+  <span class="attr">display</span>: inline-flex;
+  <span class="attr">align-items</span>: center;
+  <span class="attr">justify-content</span>: center;
+  <span class="attr">gap</span>: <span class="num">8px</span>;
+  <span class="attr">border</span>: none;
+  <span class="attr">border-radius</span>: <span class="num">8px</span>;
+  <span class="attr">font-weight</span>: <span class="num">600</span>;
+  <span class="attr">cursor</span>: pointer;
+  <span class="attr">transition</span>: all <span class="num">0.2s</span> ease;
+  <span class="attr">font-family</span>: inherit;
+}
+
+<span class="cm">/* Variants */</span>
+.<span class="fn">primary</span>   { <span class="attr">background</span>: <span class="str">#2563eb</span>; <span class="attr">color</span>: <span class="str">#fff</span>; }
+.<span class="fn">secondary</span> { <span class="attr">background</span>: <span class="str">#f1f5f9</span>; <span class="attr">color</span>: <span class="str">#334155</span>; }
+.<span class="fn">danger</span>    { <span class="attr">background</span>: <span class="str">#dc2626</span>; <span class="attr">color</span>: <span class="str">#fff</span>; }
+.<span class="fn">ghost</span>     { <span class="attr">background</span>: transparent; <span class="attr">color</span>: <span class="str">#2563eb</span>; }
+
+<span class="cm">/* Sizes */</span>
+.<span class="fn">small</span>  { <span class="attr">padding</span>: <span class="num">6px 12px</span>;  <span class="attr">font-size</span>: <span class="num">13px</span>; }
+.<span class="fn">medium</span> { <span class="attr">padding</span>: <span class="num">10px 20px</span>; <span class="attr">font-size</span>: <span class="num">14px</span>; }
+.<span class="fn">large</span>  { <span class="attr">padding</span>: <span class="num">14px 28px</span>; <span class="attr">font-size</span>: <span class="num">16px</span>; }
+
+<span class="cm">/* Hover & Disabled */</span>
+.<span class="fn">primary</span>:hover   { <span class="attr">background</span>: <span class="str">#1d4ed8</span>; <span class="attr">transform</span>: translateY(<span class="num">-1px</span>); }
+.<span class="fn">button</span>:disabled { <span class="attr">opacity</span>: <span class="num">0.5</span>; <span class="attr">cursor</span>: not-allowed; }
+
+<span class="cm">/* Loading spinner */</span>
+.<span class="fn">spinner</span> {
+  <span class="attr">width</span>: <span class="num">16px</span>; <span class="attr">height</span>: <span class="num">16px</span>;
+  <span class="attr">border</span>: <span class="num">2px</span> solid rgba(<span class="num">255,255,255,0.3</span>);
+  <span class="attr">border-top-color</span>: <span class="str">#fff</span>;
+  <span class="attr">border-radius</span>: <span class="num">50%</span>;
+  <span class="attr">animation</span>: <span class="fn">spin</span> <span class="num">0.6s</span> linear infinite;
+}
+
+@keyframes <span class="fn">spin</span> {
+  to { <span class="attr">transform</span>: rotate(<span class="num">360deg</span>); }
+}
+</pre>
+
+        <h4>Usage Examples</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            Using the Button Component
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> Button <span class="imp">from</span> <span class="str">'./components/atoms/Button'</span>;
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"primary"</span> <span class="attr">size</span>=<span class="str">"large"</span><span class="tag">&gt;</span>
+        Get Started
+      <span class="tag">&lt;/Button&gt;</span>
+
+      <span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"secondary"</span> <span class="attr">onClick</span>={handleCancel}<span class="tag">&gt;</span>
+        Cancel
+      <span class="tag">&lt;/Button&gt;</span>
+
+      <span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"danger"</span> <span class="attr">isLoading</span>={isDeleting}<span class="tag">&gt;</span>
+        Delete Account
+      <span class="tag">&lt;/Button&gt;</span>
+
+      <span class="tag">&lt;Button</span> <span class="attr">variant</span>=<span class="str">"ghost"</span> <span class="attr">size</span>=<span class="str">"small"</span><span class="tag">&gt;</span>
+        Learn More →
+      <span class="tag">&lt;/Button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+</pre>
+
+        <div class="info-box tip no-break">
+            <div class="info-box-title">💡 Best Practice</div>
+            <p>Always export components via an <span class="inline-code">index.js</span> barrel file for cleaner imports: <span class="inline-code">export { default } from './Button';</span></p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--               CHAPTER 2: RESTFUL API INTEGRATION                       -->
+<!-- ====================================================================== -->
+<div class="section theme-purple" id="ch2">
+    <div class="section-header">
+        <span class="section-number">Chapter 02</span>
+        <h2 class="section-title">RESTful API Integration & Data Flow</h2>
+    </div>
+
+    <p>Seamless communication between the frontend and backend is critical. This chapter demonstrates how to build robust, type-safe API layers using custom hooks, Axios interceptors, and centralized error handling.</p>
+
+    <h4>What is REST?</h4>
+    <p><strong>REST (Representational State Transfer)</strong> is an architectural style for designing networked applications. It relies on stateless, client-server communication over HTTP. RESTful APIs expose resources (e.g., <span class="inline-code">/api/users</span>, <span class="inline-code">/api/products/42</span>) and use standard HTTP methods to perform operations on them.</p>
+
+    <h4>HTTP Methods in REST</h4>
+    <table class="no-break">
+        <thead><tr><th>Method</th><th>Purpose</th><th>Example</th><th>Has Body?</th></tr></thead>
+        <tbody>
+            <tr><td><strong>GET</strong></td><td>Read/retrieve a resource</td><td><span class="inline-code">GET /api/users</span></td><td>No</td></tr>
+            <tr><td><strong>POST</strong></td><td>Create a new resource</td><td><span class="inline-code">POST /api/users</span></td><td>Yes</td></tr>
+            <tr><td><strong>PUT</strong></td><td>Full update (replace entire resource)</td><td><span class="inline-code">PUT /api/users/42</span></td><td>Yes</td></tr>
+            <tr><td><strong>PATCH</strong></td><td>Partial update (modify specific fields)</td><td><span class="inline-code">PATCH /api/users/42</span></td><td>Yes</td></tr>
+            <tr><td><strong>DELETE</strong></td><td>Remove a resource</td><td><span class="inline-code">DELETE /api/users/42</span></td><td>Rarely</td></tr>
+        </tbody>
+    </table>
+
+    <h4>HTTP Status Codes Every Developer Should Know</h4>
+    <table class="no-break">
+        <thead><tr><th>Code</th><th>Meaning</th><th>Frontend Handling</th></tr></thead>
+        <tbody>
+            <tr><td><span class="badge badge-green">200</span></td><td>OK — Request succeeded</td><td>Process and display data</td></tr>
+            <tr><td><span class="badge badge-green">201</span></td><td>Created — Resource created</td><td>Show success message, redirect</td></tr>
+            <tr><td><span class="badge badge-green">204</span></td><td>No Content — Deleted successfully</td><td>Remove item from UI</td></tr>
+            <tr><td><span class="badge badge-blue">400</span></td><td>Bad Request — Invalid data sent</td><td>Show validation errors</td></tr>
+            <tr><td><span class="badge badge-blue">401</span></td><td>Unauthorized — Not authenticated</td><td>Redirect to login</td></tr>
+            <tr><td><span class="badge badge-blue">403</span></td><td>Forbidden — No permission</td><td>Show "access denied" message</td></tr>
+            <tr><td><span class="badge badge-blue">404</span></td><td>Not Found — Resource doesn't exist</td><td>Show 404 page</td></tr>
+            <tr><td><span class="badge badge-purple">429</span></td><td>Too Many Requests — Rate limited</td><td>Retry after delay</td></tr>
+            <tr><td><span class="badge badge-purple">500</span></td><td>Internal Server Error</td><td>Show generic error, retry</td></tr>
+        </tbody>
+    </table>
+
+    <div class="info-box important no-break">
+        <div class="info-box-title">🔑 The API Layer Abstraction</div>
+        <p>Components should <strong>never</strong> call <span class="inline-code">fetch()</span> or <span class="inline-code">axios</span> directly. Always route API calls through a dedicated service layer. This centralizes base URLs, headers, error handling, and token management — making it easy to swap implementations (e.g., from REST to GraphQL) without touching any component code.</p>
+    </div>
+
+    <div class="diagram-box no-break">
+        <div class="diagram-title">Frontend ↔ Backend Data Flow</div>
+        <div class="flow-row">
+            <div class="flow-box">React Component</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box accent">Custom Hook<br>(useApi)</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box success">Axios Instance</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box">REST API</div>
+        </div>
+        <div class="flow-row" style="margin-top:8px;">
+            <div class="flow-box">REST API</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box success">Interceptors<br>(Transform / Error)</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box accent">State Update</div>
+            <span class="flow-arrow">→</span>
+            <div class="flow-box">Re-render UI</div>
+        </div>
+    </div>
+
+    <div id="ch2-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#ede9fe;color:#7c3aed;">🔗</span>
+            2.1 Custom Hook: useApi
+        </h3>
+
+        <p>Extracting API logic into custom hooks makes your components dramatically cleaner. Instead of cluttering every component with <span class="inline-code">useState</span> + <span class="inline-code">useEffect</span> + try/catch boilerplate, you encapsulate it once and reuse everywhere.</p>
+
+        <h4>The Three States of Async Operations</h4>
+        <p>Every API call exists in one of three states, and your UI must handle all of them:</p>
+        <ul>
+            <li><strong>Loading:</strong> The request is in-flight. Show a spinner, skeleton, or shimmer placeholder. Never leave the user staring at a blank screen.</li>
+            <li><strong>Error:</strong> The request failed. Show a meaningful error message with a retry button. Log the error for debugging. Don't expose raw server error messages to users.</li>
+            <li><strong>Success (Data):</strong> The request completed. Render the data. Handle empty states gracefully ("No results found" instead of a blank page).</li>
+        </ul>
+
+        <h4>AbortController: Preventing Memory Leaks</h4>
+        <p>When a component unmounts while an API call is still in-flight (e.g., user navigates away), the response would try to call <span class="inline-code">setState</span> on an unmounted component — causing React's famous "Can't perform a React state update on an unmounted component" warning. <span class="inline-code">AbortController</span> lets you cancel in-flight requests in the cleanup function of <span class="inline-code">useEffect</span>, preventing this issue entirely.</p>
+
+        <p>The hook below implements all of these patterns:</p>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            hooks/useApi.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useState, useEffect, useCallback, useRef } <span class="imp">from</span> <span class="str">'react'</span>;
+<span class="imp">import</span> apiClient <span class="imp">from</span> <span class="str">'../services/apiClient'</span>;
+
+<span class="cm">/**
+ * Custom hook for API calls with loading, error, and caching.
+ * @param {string} url - API endpoint
+ * @param {object} options - { method, body, autoFetch, cacheKey }
+ */</span>
+<span class="kw">export function</span> <span class="fn">useApi</span>(url, options = {}) {
+  <span class="kw">const</span> {
+    method = <span class="str">'GET'</span>,
+    body = <span class="kw">null</span>,
+    autoFetch = <span class="bool">true</span>,
+    cacheKey = <span class="kw">null</span>,
+  } = options;
+
+  <span class="kw">const</span> [data, setData]       = <span class="fn">useState</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [error, setError]     = <span class="fn">useState</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [isLoading, setLoading] = <span class="fn">useState</span>(<span class="bool">false</span>);
+  <span class="kw">const</span> abortRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="kw">const</span> <span class="fn">execute</span> = <span class="fn">useCallback</span>(<span class="kw">async</span> (overrideBody) => {
+    <span class="cm">// Cancel previous request</span>
+    <span class="kw">if</span> (abortRef.current) abortRef.current.<span class="fn">abort</span>();
+    abortRef.current = <span class="kw">new</span> <span class="type">AbortController</span>();
+
+    <span class="fn">setLoading</span>(<span class="bool">true</span>);
+    <span class="fn">setError</span>(<span class="kw">null</span>);
+
+    <span class="kw">try</span> {
+      <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">apiClient</span>({
+        url,
+        method,
+        data: overrideBody || body,
+        signal: abortRef.current.signal,
+      });
+
+      <span class="fn">setData</span>(response.data);
+
+      <span class="cm">// Optional caching</span>
+      <span class="kw">if</span> (cacheKey) {
+        sessionStorage.<span class="fn">setItem</span>(cacheKey,
+          <span class="type">JSON</span>.<span class="fn">stringify</span>(response.data)
+        );
+      }
+
+      <span class="kw">return</span> response.data;
+    } <span class="kw">catch</span> (err) {
+      <span class="kw">if</span> (err.name !== <span class="str">'CanceledError'</span>) {
+        <span class="kw">const</span> message = err.response?.data?.message
+          || err.message
+          || <span class="str">'An unexpected error occurred'</span>;
+        <span class="fn">setError</span>(message);
+      }
+    } <span class="kw">finally</span> {
+      <span class="fn">setLoading</span>(<span class="bool">false</span>);
+    }
+  }, [url, method, body, cacheKey]);
+
+  <span class="cm">// Auto-fetch on mount for GET requests</span>
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">if</span> (autoFetch &amp;&amp; method === <span class="str">'GET'</span>) {
+      <span class="cm">// Check cache first</span>
+      <span class="kw">if</span> (cacheKey) {
+        <span class="kw">const</span> cached = sessionStorage.<span class="fn">getItem</span>(cacheKey);
+        <span class="kw">if</span> (cached) { <span class="fn">setData</span>(<span class="type">JSON</span>.<span class="fn">parse</span>(cached)); <span class="kw">return</span>; }
+      }
+      <span class="fn">execute</span>();
+    }
+    <span class="kw">return</span> () => abortRef.current?.<span class="fn">abort</span>();
+  }, [execute, autoFetch, method, cacheKey]);
+
+  <span class="kw">return</span> { data, error, isLoading, execute, setData };
+}
+</pre>
+
+        <h4>Using useApi in a Component</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            pages/UserList.jsx
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> { <span class="fn">useApi</span> } <span class="imp">from</span> <span class="str">'../hooks/useApi'</span>;
+<span class="imp">import</span> UserCard <span class="imp">from</span> <span class="str">'../components/organisms/UserCard'</span>;
+<span class="imp">import</span> Spinner <span class="imp">from</span> <span class="str">'../components/atoms/Spinner'</span>;
+<span class="imp">import</span> ErrorBanner <span class="imp">from</span> <span class="str">'../components/molecules/ErrorBanner'</span>;
+
+<span class="kw">export default function</span> <span class="fn">UserList</span>() {
+  <span class="kw">const</span> {
+    data: users,
+    error,
+    isLoading,
+    execute: refetch,
+  } = <span class="fn">useApi</span>(<span class="str">'/api/users'</span>, { cacheKey: <span class="str">'users-list'</span> });
+
+  <span class="kw">if</span> (isLoading) <span class="kw">return</span> <span class="tag">&lt;Spinner /&gt;</span>;
+  <span class="kw">if</span> (error) <span class="kw">return</span> <span class="tag">&lt;ErrorBanner</span> <span class="attr">message</span>={error} <span class="attr">onRetry</span>={refetch} <span class="tag">/&gt;</span>;
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;section</span> <span class="attr">className</span>=<span class="str">"user-grid"</span><span class="tag">&gt;</span>
+      {users?.<span class="fn">map</span>((user) =&gt; (
+        <span class="tag">&lt;UserCard</span> <span class="attr">key</span>={user.id} <span class="attr">user</span>={user} <span class="tag">/&gt;</span>
+      ))}
+    <span class="tag">&lt;/section&gt;</span>
+  );
+}
+</pre>
+    </div>
+
+    <div id="ch2-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#ede9fe;color:#7c3aed;">🛡️</span>
+            2.2 Axios Interceptors & Error Handling
+        </h3>
+
+        <p><strong>Axios interceptors</strong> are middleware functions that execute before every request leaves the browser or after every response arrives. They're the perfect place to centralize cross-cutting concerns that would otherwise be duplicated across every API call.</p>
+
+        <h4>What Interceptors Handle</h4>
+        <ul>
+            <li><strong>Request Interceptors:</strong> Attach authentication tokens (Bearer headers), add request IDs for distributed tracing, log outgoing requests in development, transform request data (camelCase → snake_case for the backend).</li>
+            <li><strong>Response Interceptors:</strong> Transform response data (snake_case → camelCase), handle token refresh transparently (when a 401 is received, refresh the token and retry the original request), normalize error formats into a consistent shape, implement automatic retry logic for transient failures.</li>
+        </ul>
+
+        <h4>The Token Refresh Flow</h4>
+        <p>Token refresh is one of the most important interceptor use cases. Here's the step-by-step process:</p>
+        <ol>
+            <li>A regular API request is sent with the access token</li>
+            <li>The server responds with <strong>401 Unauthorized</strong> (token expired)</li>
+            <li>The response interceptor catches the 401</li>
+            <li>It calls the <span class="inline-code">/auth/refresh</span> endpoint with the refresh token</li>
+            <li>Gets a new access token and stores it</li>
+            <li>Retries the <strong>original request</strong> with the new token — the component never knows the refresh happened</li>
+        </ol>
+
+        <div class="info-box note no-break">
+            <div class="info-box-title">📝 Why This Is Powerful</div>
+            <p>The token refresh happens <strong>transparently</strong> — no component or hook needs to know about token expiration. The interceptor handles it silently, and the original request is retried as if nothing happened. This is the power of centralizing concerns in the API layer.</p>
+        </div>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            services/apiClient.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> axios <span class="imp">from</span> <span class="str">'axios'</span>;
+
+<span class="kw">const</span> apiClient = axios.<span class="fn">create</span>({
+  baseURL: process.env.REACT_APP_API_URL || <span class="str">'https://api.example.com'</span>,
+  timeout: <span class="num">15000</span>,
+  headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> },
+});
+
+<span class="cm">// ─── REQUEST INTERCEPTOR ───</span>
+apiClient.interceptors.request.<span class="fn">use</span>(
+  (config) => {
+    <span class="kw">const</span> token = localStorage.<span class="fn">getItem</span>(<span class="str">'authToken'</span>);
+    <span class="kw">if</span> (token) {
+      config.headers.Authorization = <span class="str">`Bearer ${</span>token<span class="str">}`</span>;
+    }
+    <span class="kw">return</span> config;
+  },
+  (error) => <span class="type">Promise</span>.<span class="fn">reject</span>(error)
+);
+
+<span class="cm">// ─── RESPONSE INTERCEPTOR ───</span>
+apiClient.interceptors.response.<span class="fn">use</span>(
+  (response) => response,
+  <span class="kw">async</span> (error) => {
+    <span class="kw">const</span> originalRequest = error.config;
+
+    <span class="cm">// Handle 401 — Attempt token refresh</span>
+    <span class="kw">if</span> (error.response?.status === <span class="num">401</span>
+        &amp;&amp; !originalRequest._retry) {
+      originalRequest._retry = <span class="bool">true</span>;
+      <span class="kw">try</span> {
+        <span class="kw">const</span> refreshToken = localStorage.<span class="fn">getItem</span>(<span class="str">'refreshToken'</span>);
+        <span class="kw">const</span> { data } = <span class="kw">await</span> axios.<span class="fn">post</span>(
+          <span class="str">'/auth/refresh'</span>,
+          { refreshToken }
+        );
+        localStorage.<span class="fn">setItem</span>(<span class="str">'authToken'</span>, data.accessToken);
+        originalRequest.headers.Authorization
+          = <span class="str">`Bearer ${</span>data.accessToken<span class="str">}`</span>;
+        <span class="kw">return</span> <span class="fn">apiClient</span>(originalRequest);
+      } <span class="kw">catch</span> (refreshError) {
+        localStorage.<span class="fn">removeItem</span>(<span class="str">'authToken'</span>);
+        window.location.href = <span class="str">'/login'</span>;
+        <span class="kw">return</span> <span class="type">Promise</span>.<span class="fn">reject</span>(refreshError);
+      }
+    }
+
+    <span class="cm">// Handle rate limiting (429)</span>
+    <span class="kw">if</span> (error.response?.status === <span class="num">429</span>) {
+      <span class="kw">const</span> retryAfter = error.response.headers[<span class="str">'retry-after'</span>] || <span class="num">5</span>;
+      <span class="kw">await new</span> <span class="type">Promise</span>(r => <span class="fn">setTimeout</span>(r, retryAfter * <span class="num">1000</span>));
+      <span class="kw">return</span> <span class="fn">apiClient</span>(originalRequest);
+    }
+
+    <span class="kw">return</span> <span class="type">Promise</span>.<span class="fn">reject</span>(error);
+  }
+);
+
+<span class="kw">export default</span> apiClient;
+</pre>
+
+        <div class="info-box warning no-break">
+            <div class="info-box-title">⚠️ Important</div>
+            <p>Never store sensitive tokens in <span class="inline-code">localStorage</span> in production. Use httpOnly cookies or a secure token management library. The example above is simplified for illustration.</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--            CHAPTER 3: CLEAN, MODULAR & REUSABLE CODE                   -->
+<!-- ====================================================================== -->
+<div class="section theme-green" id="ch3">
+    <div class="section-header">
+        <span class="section-number">Chapter 03</span>
+        <h2 class="section-title">Clean, Modular & Reusable Code</h2>
+    </div>
+
+    <p>Writing clean code isn't just about formatting — it's about creating abstractions that are easy to understand, test, and extend. This chapter covers the most powerful React patterns for code reuse.</p>
+
+    <h4>Key Principles for Clean React Code</h4>
+    <ul>
+        <li><strong>DRY (Don't Repeat Yourself):</strong> If you find yourself copying the same <span class="inline-code">useState</span> + <span class="inline-code">useEffect</span> pattern across multiple components, extract it into a custom hook. If the same UI pattern appears in 3+ places, extract it into a shared component.</li>
+        <li><strong>SOLID Applied to React:</strong> <em>Single Responsibility</em> — one component, one job. <em>Open/Closed</em> — extend behavior through composition (<span class="inline-code">children</span>, render props) rather than modifying the original. <em>Dependency Inversion</em> — inject API clients and services rather than hard-coding them.</li>
+        <li><strong>AHA (Avoid Hasty Abstractions):</strong> Sometimes duplicating code is better than a wrong abstraction. Wait until you see the pattern three times before abstracting. A wrong abstraction is far more expensive to maintain than duplication.</li>
+        <li><strong>File Naming Conventions:</strong> <span class="inline-code">PascalCase</span> for components (<span class="inline-code">UserCard.jsx</span>), <span class="inline-code">camelCase</span> for hooks and utils (<span class="inline-code">useDebounce.js</span>, <span class="inline-code">formatDate.js</span>), <span class="inline-code">kebab-case</span> for CSS files (<span class="inline-code">user-card.module.css</span>).</li>
+        <li><strong>Barrel Exports:</strong> Use <span class="inline-code">index.js</span> files to create clean import paths. Instead of <span class="inline-code">import Button from '../components/atoms/Button/Button'</span>, you get <span class="inline-code">import Button from '../components/atoms/Button'</span>.</li>
+    </ul>
+
+    <div class="info-box tip no-break">
+        <div class="info-box-title">💡 The Litmus Test for Clean Code</div>
+        <p>Can a new developer on the team understand this component within 60 seconds? If a component requires extensive documentation or explanation, it's doing too much. Break it into smaller, self-explanatory pieces.</p>
+    </div>
+
+    <div id="ch3-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#d1fae5;color:#059669;">🪝</span>
+            3.1 Custom Hooks Pattern
+        </h3>
+
+        <p><strong>Custom hooks</strong> are JavaScript functions that start with the word <span class="inline-code">use</span> and can call other React hooks. They let you extract component logic into reusable, testable functions. Unlike utility functions, custom hooks can use state, effects, refs, and any other React hook.</p>
+
+        <h4>Rules of Hooks</h4>
+        <p>React enforces two rules for hooks that you must never violate:</p>
+        <ol>
+            <li><strong>Only call hooks at the top level</strong> — Never inside loops, conditions, or nested functions. React relies on the <em>order</em> of hook calls being the same on every render.</li>
+            <li><strong>Only call hooks from React functions</strong> — Either from functional components or from other custom hooks. Never from regular JavaScript functions.</li>
+        </ol>
+
+        <h4>When to Create a Custom Hook</h4>
+        <p>Create a custom hook when you find the same <span class="inline-code">useState</span> + <span class="inline-code">useEffect</span> pattern repeated across 2 or more components. The beauty of custom hooks is <strong>composition</strong> — hooks can call other hooks, enabling powerful layered abstractions (e.g., <span class="inline-code">useDebounce</span> inside <span class="inline-code">useApi</span>).</p>
+
+        <p>Here are three essential hooks every React project needs:</p>
+
+        <h4>useDebounce — Debounce User Input</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            hooks/useDebounce.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useState, useEffect } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="cm">/**
+ * Debounces a value by the specified delay.
+ * Useful for search inputs to avoid excessive API calls.
+ *
+ * @param {any} value - The value to debounce
+ * @param {number} delay - Delay in milliseconds (default: 300)
+ * @returns {any} The debounced value
+ */</span>
+<span class="kw">export function</span> <span class="fn">useDebounce</span>(value, delay = <span class="num">300</span>) {
+  <span class="kw">const</span> [debouncedValue, setDebouncedValue] = <span class="fn">useState</span>(value);
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">const</span> timer = <span class="fn">setTimeout</span>(
+      () => <span class="fn">setDebouncedValue</span>(value),
+      delay
+    );
+    <span class="kw">return</span> () => <span class="fn">clearTimeout</span>(timer);
+  }, [value, delay]);
+
+  <span class="kw">return</span> debouncedValue;
+}
+</pre>
+
+        <h4>useLocalStorage — Persistent State</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            hooks/useLocalStorage.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useState, useCallback } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="kw">export function</span> <span class="fn">useLocalStorage</span>(key, initialValue) {
+  <span class="kw">const</span> [storedValue, setStoredValue] = <span class="fn">useState</span>(() => {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> item = window.localStorage.<span class="fn">getItem</span>(key);
+      <span class="kw">return</span> item ? <span class="type">JSON</span>.<span class="fn">parse</span>(item) : initialValue;
+    } <span class="kw">catch</span> (error) {
+      console.<span class="fn">warn</span>(<span class="str">`Error reading localStorage key "${</span>key<span class="str">}":`</span>, error);
+      <span class="kw">return</span> initialValue;
+    }
+  });
+
+  <span class="kw">const</span> <span class="fn">setValue</span> = <span class="fn">useCallback</span>((value) => {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> valueToStore =
+        value <span class="kw">instanceof</span> <span class="type">Function</span> ? <span class="fn">value</span>(storedValue) : value;
+      <span class="fn">setStoredValue</span>(valueToStore);
+      window.localStorage.<span class="fn">setItem</span>(key,
+        <span class="type">JSON</span>.<span class="fn">stringify</span>(valueToStore)
+      );
+    } <span class="kw">catch</span> (error) {
+      console.<span class="fn">warn</span>(<span class="str">`Error setting localStorage key "${</span>key<span class="str">}":`</span>, error);
+    }
+  }, [key, storedValue]);
+
+  <span class="kw">return</span> [storedValue, setValue];
+}
+</pre>
+
+        <h4>Usage: Search with Debounce</h4>
+<pre><span class="lang-tag">JSX</span>
+<span class="kw">function</span> <span class="fn">SearchUsers</span>() {
+  <span class="kw">const</span> [query, setQuery] = <span class="fn">useState</span>(<span class="str">''</span>);
+  <span class="kw">const</span> debouncedQuery   = <span class="fn">useDebounce</span>(query, <span class="num">400</span>);
+  <span class="kw">const</span> { data: results, isLoading } = <span class="fn">useApi</span>(
+    debouncedQuery ? <span class="str">`/api/users/search?q=${</span>debouncedQuery<span class="str">}`</span> : <span class="kw">null</span>,
+    { autoFetch: !!debouncedQuery }
+  );
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">type</span>=<span class="str">"search"</span>
+        <span class="attr">placeholder</span>=<span class="str">"Search users..."</span>
+        <span class="attr">value</span>={query}
+        <span class="attr">onChange</span>={(e) =&gt; <span class="fn">setQuery</span>(e.target.value)}
+      <span class="tag">/&gt;</span>
+      {isLoading &amp;&amp; <span class="tag">&lt;Spinner /&gt;</span>}
+      {results?.<span class="fn">map</span>(user =&gt; <span class="tag">&lt;UserCard</span> <span class="attr">key</span>={user.id} <span class="attr">user</span>={user} <span class="tag">/&gt;</span>)}
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+</pre>
+    </div>
+
+    <div id="ch3-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#d1fae5;color:#059669;">🧩</span>
+            3.2 Compound Component Pattern
+        </h3>
+
+        <p>The compound component pattern allows related components to share implicit state, creating flexible and expressive APIs:</p>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            components/molecules/Accordion/Accordion.jsx
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> { createContext, useContext, useState } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> AccordionContext = <span class="fn">createContext</span>();
+
+<span class="cm">// Parent: manages which item is open</span>
+<span class="kw">function</span> <span class="fn">Accordion</span>({ children, allowMultiple = <span class="bool">false</span> }) {
+  <span class="kw">const</span> [openItems, setOpenItems] = <span class="fn">useState</span>(<span class="kw">new</span> <span class="type">Set</span>());
+
+  <span class="kw">const</span> <span class="fn">toggle</span> = (id) => {
+    <span class="fn">setOpenItems</span>((prev) => {
+      <span class="kw">const</span> next = <span class="kw">new</span> <span class="type">Set</span>(allowMultiple ? prev : []);
+      <span class="kw">if</span> (next.<span class="fn">has</span>(id)) next.<span class="fn">delete</span>(id);
+      <span class="kw">else</span> next.<span class="fn">add</span>(id);
+      <span class="kw">return</span> next;
+    });
+  };
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;AccordionContext.Provider</span> <span class="attr">value</span>={{ openItems, toggle }}<span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"accordion"</span><span class="tag">&gt;</span>{children}<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/AccordionContext.Provider&gt;</span>
+  );
+}
+
+<span class="cm">// Child: individual accordion item</span>
+<span class="kw">function</span> <span class="fn">AccordionItem</span>({ id, title, children }) {
+  <span class="kw">const</span> { openItems, toggle } = <span class="fn">useContext</span>(AccordionContext);
+  <span class="kw">const</span> isOpen = openItems.<span class="fn">has</span>(id);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div</span> <span class="attr">className</span>={<span class="str">`accordion-item ${</span>isOpen ? <span class="str">'open'</span> : <span class="str">''</span><span class="str">}`</span>}<span class="tag">&gt;</span>
+      <span class="tag">&lt;button</span>
+        <span class="attr">className</span>=<span class="str">"accordion-trigger"</span>
+        <span class="attr">onClick</span>={() =&gt; <span class="fn">toggle</span>(id)}
+        <span class="attr">aria-expanded</span>={isOpen}
+      <span class="tag">&gt;</span>
+        {title}
+        <span class="tag">&lt;span&gt;</span>{isOpen ? <span class="str">'−'</span> : <span class="str">'+'</span>}<span class="tag">&lt;/span&gt;</span>
+      <span class="tag">&lt;/button&gt;</span>
+      {isOpen &amp;&amp; (
+        <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"accordion-content"</span> <span class="attr">role</span>=<span class="str">"region"</span><span class="tag">&gt;</span>
+          {children}
+        <span class="tag">&lt;/div&gt;</span>
+      )}
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+
+<span class="cm">// Attach sub-components</span>
+Accordion.Item = AccordionItem;
+
+<span class="kw">export default</span> Accordion;
+
+<span class="cm">// ─── Usage ───
+// &lt;Accordion allowMultiple&gt;
+//   &lt;Accordion.Item id="1" title="What is React?"&gt;
+//     React is a JavaScript library for building UIs.
+//   &lt;/Accordion.Item&gt;
+//   &lt;Accordion.Item id="2" title="Why use hooks?"&gt;
+//     Hooks let you use state in functional components.
+//   &lt;/Accordion.Item&gt;
+// &lt;/Accordion&gt;</span>
+</pre>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--       CHAPTER 4: PERFORMANCE OPTIMIZATION & LAZY LOADING               -->
+<!-- ====================================================================== -->
+<div class="section theme-orange" id="ch4">
+    <div class="section-header">
+        <span class="section-number">Chapter 04</span>
+        <h2 class="section-title">Performance Optimization & Lazy Loading</h2>
+    </div>
+
+    <p>A fast application directly impacts user retention and SEO ranking. <strong>53% of mobile users abandon a site that takes longer than 3 seconds to load</strong>. This chapter covers React-specific optimization techniques, from code splitting to memoization.</p>
+
+    <h4>Why Performance Matters: Core Web Vitals</h4>
+    <p>Google uses <strong>Core Web Vitals</strong> as ranking signals. These metrics directly impact your search engine visibility:</p>
+
+    <table class="no-break">
+        <thead><tr><th>Metric</th><th>What It Measures</th><th>Target</th><th>Tool</th></tr></thead>
+        <tbody>
+            <tr><td><strong>LCP</strong></td><td>Largest Contentful Paint — time until the biggest visible element renders</td><td>&lt; 2.5s</td><td>Lighthouse</td></tr>
+            <tr><td><strong>FID</strong></td><td>First Input Delay — time until the page responds to first user interaction</td><td>&lt; 100ms</td><td>Web Vitals</td></tr>
+            <tr><td><strong>CLS</strong></td><td>Cumulative Layout Shift — visual stability (elements jumping around)</td><td>&lt; 0.1</td><td>Lighthouse</td></tr>
+            <tr><td><strong>TTI</strong></td><td>Time to Interactive — time until the page is fully interactive</td><td>&lt; 3.8s</td><td>Lighthouse</td></tr>
+            <tr><td><strong>TBT</strong></td><td>Total Blocking Time — sum of long tasks blocking the main thread</td><td>&lt; 200ms</td><td>DevTools</td></tr>
+        </tbody>
+    </table>
+
+    <h4>How React's Rendering Model Works</h4>
+    <p>React uses a <strong>Virtual DOM</strong> — a lightweight JavaScript representation of the actual DOM. When state changes, React creates a new Virtual DOM tree, compares it with the previous one (<strong>reconciliation</strong>), and applies only the minimum necessary changes to the real DOM. The <strong>Fiber architecture</strong> (React 16+) makes this process interruptible, enabling concurrent rendering.</p>
+
+    <p><strong>The re-render waterfall:</strong> By default, when a parent component re-renders, <em>all of its children re-render too</em>, regardless of whether their props changed. This is why memoization is so important — it lets you break this cascade.</p>
+
+    <div class="info-box warning no-break">
+        <div class="info-box-title">⚠️ Common Performance Anti-Patterns</div>
+        <p><strong>Avoid:</strong> Creating new objects/arrays inline in JSX (<span class="inline-code">style={{color: 'red'}}</span>), defining functions inside render, using array index as <span class="inline-code">key</span> in dynamic lists, importing entire libraries when you need one function. <strong>Rule:</strong> Measure first with React DevTools Profiler, then optimize the critical path. Never optimize blindly.</p>
+    </div>
+
+    <div id="ch4-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#fef3c7;color:#d97706;">⚡</span>
+            4.1 React.lazy, Suspense & Code Splitting
+        </h3>
+
+        <p><strong>Code splitting</strong> is the technique of breaking your application bundle into smaller chunks that load on demand. Without it, Webpack/Vite creates one giant JavaScript file containing every component — even ones the user may never visit.</p>
+
+        <h4>How It Works Under the Hood</h4>
+        <ul>
+            <li><strong>Dynamic <span class="inline-code">import()</span>:</strong> The JavaScript <span class="inline-code">import()</span> expression returns a Promise. Webpack/Vite detect it and create a separate chunk file. The chunk is only downloaded when <span class="inline-code">import()</span> is executed.</li>
+            <li><strong><span class="inline-code">React.lazy()</span>:</strong> Wraps a dynamic import and returns a component. React only triggers the import when the component is first rendered. Until then, zero bytes are downloaded for that component.</li>
+            <li><strong><span class="inline-code">Suspense</span>:</strong> A loading boundary that shows a fallback UI while the lazy component is being downloaded. Think of it as a try/catch for loading states.</li>
+        </ul>
+
+        <h4>Route-Based vs Component-Based Splitting</h4>
+        <p><strong>Route-based splitting</strong> is the easiest win — each page loads as a separate chunk. Users only download the code for the page they visit. <strong>Component-based splitting</strong> goes further: heavy widgets like charts, rich text editors, map libraries, and PDF viewers can be lazy-loaded even within a single page.</p>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            App.jsx — Route-Based Code Splitting
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> React, { Suspense, lazy } <span class="imp">from</span> <span class="str">'react'</span>;
+<span class="imp">import</span> { BrowserRouter, Routes, Route } <span class="imp">from</span> <span class="str">'react-router-dom'</span>;
+<span class="imp">import</span> LoadingFallback <span class="imp">from</span> <span class="str">'./components/atoms/LoadingFallback'</span>;
+<span class="imp">import</span> Layout <span class="imp">from</span> <span class="str">'./components/templates/Layout'</span>;
+
+<span class="cm">// Lazy-loaded route components</span>
+<span class="kw">const</span> Dashboard  = <span class="fn">lazy</span>(() => <span class="kw">import</span>(<span class="str">'./pages/Dashboard'</span>));
+<span class="kw">const</span> UserList   = <span class="fn">lazy</span>(() => <span class="kw">import</span>(<span class="str">'./pages/UserList'</span>));
+<span class="kw">const</span> Settings   = <span class="fn">lazy</span>(() => <span class="kw">import</span>(<span class="str">'./pages/Settings'</span>));
+<span class="kw">const</span> Analytics  = <span class="fn">lazy</span>(() => <span class="kw">import</span>(<span class="str">'./pages/Analytics'</span>));
+
+<span class="cm">// Preload critical routes on hover</span>
+<span class="kw">const</span> <span class="fn">preloadRoute</span> = (importFn) => {
+  <span class="kw">let</span> loaded = <span class="bool">false</span>;
+  <span class="kw">return</span> {
+    <span class="fn">component</span>: <span class="fn">lazy</span>(importFn),
+    <span class="fn">preload</span>: () => { <span class="kw">if</span> (!loaded) { loaded = <span class="bool">true</span>; <span class="fn">importFn</span>(); } },
+  };
+};
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;BrowserRouter&gt;</span>
+      <span class="tag">&lt;Layout&gt;</span>
+        <span class="tag">&lt;Suspense</span> <span class="attr">fallback</span>={<span class="tag">&lt;LoadingFallback /&gt;</span>}<span class="tag">&gt;</span>
+          <span class="tag">&lt;Routes&gt;</span>
+            <span class="tag">&lt;Route</span> <span class="attr">path</span>=<span class="str">"/"</span>          <span class="attr">element</span>={<span class="tag">&lt;Dashboard /&gt;</span>} <span class="tag">/&gt;</span>
+            <span class="tag">&lt;Route</span> <span class="attr">path</span>=<span class="str">"/users"</span>     <span class="attr">element</span>={<span class="tag">&lt;UserList /&gt;</span>} <span class="tag">/&gt;</span>
+            <span class="tag">&lt;Route</span> <span class="attr">path</span>=<span class="str">"/settings"</span>  <span class="attr">element</span>={<span class="tag">&lt;Settings /&gt;</span>} <span class="tag">/&gt;</span>
+            <span class="tag">&lt;Route</span> <span class="attr">path</span>=<span class="str">"/analytics"</span> <span class="attr">element</span>={<span class="tag">&lt;Analytics /&gt;</span>} <span class="tag">/&gt;</span>
+          <span class="tag">&lt;/Routes&gt;</span>
+        <span class="tag">&lt;/Suspense&gt;</span>
+      <span class="tag">&lt;/Layout&gt;</span>
+    <span class="tag">&lt;/BrowserRouter&gt;</span>
+  );
+}
+</pre>
+
+        <h4>Intersection Observer: Lazy Load Components on Scroll</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            hooks/useLazyLoad.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useRef, useState, useEffect } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="kw">export function</span> <span class="fn">useLazyLoad</span>(options = {}) {
+  <span class="kw">const</span> ref = <span class="fn">useRef</span>(<span class="kw">null</span>);
+  <span class="kw">const</span> [isVisible, setVisible] = <span class="fn">useState</span>(<span class="bool">false</span>);
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">const</span> observer = <span class="kw">new</span> <span class="type">IntersectionObserver</span>(
+      ([entry]) => {
+        <span class="kw">if</span> (entry.isIntersecting) {
+          <span class="fn">setVisible</span>(<span class="bool">true</span>);
+          observer.<span class="fn">disconnect</span>();  <span class="cm">// Once visible, stop observing</span>
+        }
+      },
+      { threshold: <span class="num">0.1</span>, rootMargin: <span class="str">'100px'</span>, ...options }
+    );
+
+    <span class="kw">if</span> (ref.current) observer.<span class="fn">observe</span>(ref.current);
+    <span class="kw">return</span> () => observer.<span class="fn">disconnect</span>();
+  }, [options]);
+
+  <span class="kw">return</span> { ref, isVisible };
+}
+
+<span class="cm">// ─── Usage ───</span>
+<span class="cm">// function HeavyChart() {</span>
+<span class="cm">//   const { ref, isVisible } = useLazyLoad();</span>
+<span class="cm">//   return (</span>
+<span class="cm">//     &lt;div ref={ref}&gt;</span>
+<span class="cm">//       {isVisible ? &lt;Chart data={data} /&gt; : &lt;Placeholder /&gt;}</span>
+<span class="cm">//     &lt;/div&gt;</span>
+<span class="cm">//   );</span>
+<span class="cm">// }</span>
+</pre>
+    </div>
+
+    <div id="ch4-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#fef3c7;color:#d97706;">🧠</span>
+            4.2 useMemo, useCallback & React.memo
+        </h3>
+
+        <p>React provides three memoization primitives to prevent unnecessary work. Understanding when and how to use each is crucial for performance.</p>
+
+        <h4>Deep Dive: How Each One Works</h4>
+        <ul>
+            <li><strong><span class="inline-code">React.memo(Component)</span>:</strong> A higher-order component that performs a <em>shallow comparison</em> of props. If all props are referentially equal (<span class="inline-code">===</span>), the component skips re-rendering entirely. It's the functional equivalent of <span class="inline-code">shouldComponentUpdate</span>. <strong>Caveat:</strong> If you pass new object/array/function references every render, memo becomes useless because the shallow comparison will always find differences.</li>
+            <li><strong><span class="inline-code">useMemo(fn, deps)</span>:</strong> Caches the <em>return value</em> of an expensive computation between renders. Only recomputes when one of the dependencies changes. Use it for filtering large arrays, complex calculations, or creating objects that you pass to memoized children.</li>
+            <li><strong><span class="inline-code">useCallback(fn, deps)</span>:</strong> Caches the <em>function reference itself</em> between renders. It's essentially <span class="inline-code">useMemo(() => fn, deps)</span>. Critical when passing callbacks to <span class="inline-code">React.memo</span>-wrapped children — without it, a new function is created every render, defeating the purpose of memo.</li>
+        </ul>
+
+        <div class="info-box note no-break">
+            <div class="info-box-title">📝 React 18+ Automatic Batching</div>
+            <p>React 18 automatically <strong>batches state updates</strong> — even inside promises, timeouts, and native event handlers. This means calling <span class="inline-code">setState</span> three times in a row triggers only <strong>one re-render</strong>, not three. Combined with <span class="inline-code">useTransition</span> (marks updates as non-urgent) and <span class="inline-code">useDeferredValue</span> (defers expensive re-renders), React 18's concurrent features keep the UI responsive during heavy operations.</p>
+        </div>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            Performance Optimization Patterns
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> React, { useMemo, useCallback, memo } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="cm">// ─── 1. React.memo: Skip re-rendering if props are unchanged ───</span>
+<span class="kw">const</span> <span class="fn">ExpensiveList</span> = <span class="fn">memo</span>(({ items, onSelect }) => {
+  console.<span class="fn">log</span>(<span class="str">'ExpensiveList rendered'</span>);
+  <span class="kw">return</span> (
+    <span class="tag">&lt;ul&gt;</span>
+      {items.<span class="fn">map</span>(item => (
+        <span class="tag">&lt;li</span> <span class="attr">key</span>={item.id} <span class="attr">onClick</span>={() => <span class="fn">onSelect</span>(item.id)}<span class="tag">&gt;</span>
+          {item.name}
+        <span class="tag">&lt;/li&gt;</span>
+      ))}
+    <span class="tag">&lt;/ul&gt;</span>
+  );
+});
+
+<span class="kw">function</span> <span class="fn">Dashboard</span>({ products }) {
+  <span class="kw">const</span> [filter, setFilter] = <span class="fn">useState</span>(<span class="str">''</span>);
+  <span class="kw">const</span> [selectedId, setSelectedId] = <span class="fn">useState</span>(<span class="kw">null</span>);
+
+  <span class="cm">// ─── 2. useMemo: Cache expensive computations ───</span>
+  <span class="kw">const</span> filteredProducts = <span class="fn">useMemo</span>(() => {
+    console.<span class="fn">log</span>(<span class="str">'Filtering products...'</span>);
+    <span class="kw">return</span> products.<span class="fn">filter</span>(p =>
+      p.name.<span class="fn">toLowerCase</span>().<span class="fn">includes</span>(filter.<span class="fn">toLowerCase</span>())
+    );
+  }, [products, filter]); <span class="cm">// Re-compute only when deps change</span>
+
+  <span class="cm">// ─── 3. useCallback: Stable function reference ───</span>
+  <span class="kw">const</span> <span class="fn">handleSelect</span> = <span class="fn">useCallback</span>((id) => {
+    <span class="fn">setSelectedId</span>(id);
+  }, []); <span class="cm">// Stable reference → won't cause child re-renders</span>
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">value</span>={filter}
+        <span class="attr">onChange</span>={(e) =&gt; <span class="fn">setFilter</span>(e.target.value)}
+        <span class="attr">placeholder</span>=<span class="str">"Filter products..."</span>
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;ExpensiveList</span>
+        <span class="attr">items</span>={filteredProducts}
+        <span class="attr">onSelect</span>={handleSelect}
+      <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+</pre>
+
+        <div class="info-box note no-break">
+            <div class="info-box-title">📝 When to Memoize</div>
+            <p><strong>DO</strong> memoize: expensive calculations, components with many children, callbacks passed to memoized children.<br>
+            <strong>DON'T</strong> memoize: everything — premature optimization adds complexity. Profile first with React DevTools Profiler.</p>
+        </div>
+
+        <h4>Performance Comparison Table</h4>
+        <table class="no-break">
+            <thead>
+                <tr>
+                    <th>Technique</th>
+                    <th>What It Does</th>
+                    <th>When to Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="inline-code">React.memo()</span></td>
+                    <td>Skips re-render if props unchanged</td>
+                    <td>Pure display components with stable props</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useMemo()</span></td>
+                    <td>Caches expensive computation results</td>
+                    <td>Filtering, sorting, complex transforms</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useCallback()</span></td>
+                    <td>Preserves function reference identity</td>
+                    <td>Callbacks passed to memoized children</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">React.lazy()</span></td>
+                    <td>Loads component bundle on demand</td>
+                    <td>Route-level or heavy component splitting</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useTransition()</span></td>
+                    <td>Marks state updates as non-urgent</td>
+                    <td>Search filtering, tab switching</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useDeferredValue()</span></td>
+                    <td>Defers re-render of expensive subtrees</td>
+                    <td>Rendering large lists while typing</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--           CHAPTER 5: COLLABORATING WITH UI/UX DESIGNERS                -->
+<!-- ====================================================================== -->
+<div class="section theme-blue" id="ch5">
+    <div class="section-header">
+        <span class="section-number">Chapter 05</span>
+        <h2 class="section-title">Collaborating with UI/UX Designers</h2>
+    </div>
+
+    <p>Bridging the gap between design and development requires shared vocabulary (design tokens), consistent spacing systems, and pixel-perfect responsive implementations.</p>
+
+    <h4>The Developer-Designer Collaboration Workflow</h4>
+    <ol>
+        <li><strong>Designer creates mockups</strong> in Figma/Sketch with a defined design system (colors, typography, spacing grid)</li>
+        <li><strong>Developer inspects specs</strong> — extracts exact spacing, colors, font sizes, border radii from the design tool</li>
+        <li><strong>Developer implements</strong> using design tokens that mirror the design system 1:1</li>
+        <li><strong>Designer reviews</strong> the implementation against the mockups for pixel-accuracy</li>
+        <li><strong>Iterate</strong> until design intent is perfectly matched</li>
+    </ol>
+
+    <h4>Design System Fundamentals</h4>
+    <ul>
+        <li><strong>The 4px/8px Spacing Grid:</strong> Most modern design systems use a base unit of 4px. All spacing values are multiples: 4, 8, 12, 16, 24, 32, 48, 64. This creates visual rhythm, consistency, and makes spacing decisions automatic rather than arbitrary.</li>
+        <li><strong>Typography Scale:</strong> Establish a modular scale with a consistent ratio (e.g., 1.25). Sizes progress: 12px → 14px → 16px → 20px → 24px → 30px → 36px. Never use arbitrary font sizes like 17px or 23px.</li>
+        <li><strong>Color System:</strong> Define primary, secondary, neutral, and semantic (success/warning/danger/info) palettes. Each palette has shades from 50 (lightest) to 900 (darkest). This gives designers and developers a shared color vocabulary.</li>
+        <li><strong>Shared Language:</strong> When a designer says "use primary-500 with space-4 padding," the developer knows exactly what CSS values to use. Design tokens create this shared language.</li>
+    </ul>
+
+    <div id="ch5-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#dbeafe;color:#2563eb;">🎨</span>
+            5.1 Design Tokens & Theming
+        </h3>
+
+        <p>Design tokens are the single source of truth for colors, typography, spacing, and more. They ensure consistency between Figma designs and code.</p>
+
+        <h4>Why CSS Custom Properties?</h4>
+        <ul>
+            <li><strong>Dynamic and Runtime:</strong> Unlike Sass variables which compile to static values, CSS Custom Properties (<span class="inline-code">--var-name</span>) exist at runtime and can be manipulated by JavaScript.</li>
+            <li><strong>Inheritance & Cascading:</strong> They follow the CSS cascade. You can redefine a variable inside a specific component or theme class without writing redundant CSS rules.</li>
+            <li><strong>Dark Mode Made Easy:</strong> By changing the variables under a <span class="inline-code">[data-theme="dark"]</span> attribute on the <span class="inline-code">&lt;html&gt;</span> tag, you instantly update the colors across the entire app.</li>
+        </ul>
+
+        <p>Here is an example token file mirroring a typical Figma setup:</p>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            styles/tokens.css
+        </div>
+<pre><span class="lang-tag">CSS</span>
+<span class="cm">/* ═══ DESIGN TOKENS ═══ */</span>
+:root {
+  <span class="cm">/* Colors — from Figma design system */</span>
+  <span class="attr">--color-primary-50</span>:  <span class="str">#eff6ff</span>;
+  <span class="attr">--color-primary-100</span>: <span class="str">#dbeafe</span>;
+  <span class="attr">--color-primary-500</span>: <span class="str">#3b82f6</span>;
+  <span class="attr">--color-primary-600</span>: <span class="str">#2563eb</span>;
+  <span class="attr">--color-primary-700</span>: <span class="str">#1d4ed8</span>;
+
+  <span class="attr">--color-neutral-50</span>:  <span class="str">#f8fafc</span>;
+  <span class="attr">--color-neutral-200</span>: <span class="str">#e2e8f0</span>;
+  <span class="attr">--color-neutral-700</span>: <span class="str">#334155</span>;
+  <span class="attr">--color-neutral-900</span>: <span class="str">#0f172a</span>;
+
+  <span class="cm">/* Typography */</span>
+  <span class="attr">--font-sans</span>: <span class="str">'Inter'</span>, system-ui, sans-serif;
+  <span class="attr">--font-mono</span>: <span class="str">'JetBrains Mono'</span>, monospace;
+
+  <span class="attr">--text-xs</span>:   <span class="num">0.75rem</span>;    <span class="cm">/* 12px */</span>
+  <span class="attr">--text-sm</span>:   <span class="num">0.875rem</span>;   <span class="cm">/* 14px */</span>
+  <span class="attr">--text-base</span>: <span class="num">1rem</span>;       <span class="cm">/* 16px */</span>
+  <span class="attr">--text-lg</span>:   <span class="num">1.125rem</span>;   <span class="cm">/* 18px */</span>
+  <span class="attr">--text-xl</span>:   <span class="num">1.25rem</span>;    <span class="cm">/* 20px */</span>
+  <span class="attr">--text-2xl</span>:  <span class="num">1.5rem</span>;     <span class="cm">/* 24px */</span>
+
+  <span class="cm">/* Spacing (4px base unit) */</span>
+  <span class="attr">--space-1</span>: <span class="num">4px</span>;   <span class="attr">--space-2</span>: <span class="num">8px</span>;
+  <span class="attr">--space-3</span>: <span class="num">12px</span>;  <span class="attr">--space-4</span>: <span class="num">16px</span>;
+  <span class="attr">--space-6</span>: <span class="num">24px</span>;  <span class="attr">--space-8</span>: <span class="num">32px</span>;
+
+  <span class="cm">/* Border Radius */</span>
+  <span class="attr">--radius-sm</span>: <span class="num">4px</span>;  <span class="attr">--radius-md</span>: <span class="num">8px</span>;
+  <span class="attr">--radius-lg</span>: <span class="num">12px</span>; <span class="attr">--radius-xl</span>: <span class="num">16px</span>;
+  <span class="attr">--radius-full</span>: <span class="num">9999px</span>;
+
+  <span class="cm">/* Shadows */</span>
+  <span class="attr">--shadow-sm</span>: <span class="num">0 1px 2px</span> rgba(<span class="num">0,0,0,0.05</span>);
+  <span class="attr">--shadow-md</span>: <span class="num">0 4px 6px</span> rgba(<span class="num">0,0,0,0.07</span>);
+  <span class="attr">--shadow-lg</span>: <span class="num">0 10px 15px</span> rgba(<span class="num">0,0,0,0.1</span>);
+}
+
+<span class="cm">/* Dark Mode Override */</span>
+[data-theme=<span class="str">"dark"</span>] {
+  <span class="attr">--color-primary-500</span>: <span class="str">#60a5fa</span>;
+  <span class="attr">--color-neutral-50</span>:  <span class="str">#0f172a</span>;
+  <span class="attr">--color-neutral-200</span>: <span class="str">#1e293b</span>;
+  <span class="attr">--color-neutral-700</span>: <span class="str">#cbd5e1</span>;
+  <span class="attr">--color-neutral-900</span>: <span class="str">#f8fafc</span>;
+}
+</pre>
+
+        <h4>Theme Provider with Context API</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            context/ThemeContext.jsx
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> { createContext, useContext } <span class="imp">from</span> <span class="str">'react'</span>;
+<span class="imp">import</span> { <span class="fn">useLocalStorage</span> } <span class="imp">from</span> <span class="str">'../hooks/useLocalStorage'</span>;
+
+<span class="kw">const</span> ThemeContext = <span class="fn">createContext</span>();
+
+<span class="kw">export function</span> <span class="fn">ThemeProvider</span>({ children }) {
+  <span class="kw">const</span> [theme, setTheme] = <span class="fn">useLocalStorage</span>(<span class="str">'theme'</span>, <span class="str">'light'</span>);
+
+  <span class="kw">const</span> <span class="fn">toggleTheme</span> = () => {
+    <span class="kw">const</span> next = theme === <span class="str">'light'</span> ? <span class="str">'dark'</span> : <span class="str">'light'</span>;
+    <span class="fn">setTheme</span>(next);
+    document.documentElement.<span class="fn">setAttribute</span>(<span class="str">'data-theme'</span>, next);
+  };
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;ThemeContext.Provider</span> <span class="attr">value</span>={{ theme, toggleTheme }}<span class="tag">&gt;</span>
+      {children}
+    <span class="tag">&lt;/ThemeContext.Provider&gt;</span>
+  );
+}
+
+<span class="kw">export const</span> <span class="fn">useTheme</span> = () => <span class="fn">useContext</span>(ThemeContext);
+</pre>
+    </div>
+
+    <div id="ch5-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#dbeafe;color:#2563eb;">📱</span>
+            5.2 Responsive Design Implementation
+        </h3>
+
+        <p>Modern responsive design requires more than just media queries. It's about adaptive layouts that respond to content and screen sizes efficiently.</p>
+
+        <h4>Mobile-First Philosophy</h4>
+        <ul>
+            <li><strong>Default Styles:</strong> Write styles for the smallest screens first (mobile devices). These are your base styles outside of any media queries.</li>
+            <li><strong>Progressive Enhancement:</strong> Use <span class="inline-code">min-width</span> media queries to add complexity and adjust layouts as the screen width increases.</li>
+            <li><strong>Why?</strong> It's easier to add layout complexity for larger screens than to override and remove complex desktop styles to fit a mobile screen. It also improves performance on slower mobile devices by loading simpler CSS rules first.</li>
+        </ul>
+
+        <h4>Grid vs Flexbox</h4>
+        <p>Use <strong>CSS Grid</strong> for 2D layouts (rows and columns) like page structures, dashboards, and card grids. Use <strong>Flexbox</strong> for 1D layouts (a single row or column) like navigation bars, aligning icons with text, and distributing space within a component.</p>
+
+        <p>A typical mobile-first layout implementation using Grid:</p>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            styles/responsive.css
+        </div>
+<pre><span class="lang-tag">CSS</span>
+<span class="cm">/* ═══ BREAKPOINTS (Mobile-First) ═══ */</span>
+
+<span class="cm">/* Base: Mobile (0 – 639px) */</span>
+.<span class="fn">container</span> {
+  <span class="attr">width</span>: <span class="num">100%</span>;
+  <span class="attr">padding</span>: <span class="num">0 16px</span>;
+  <span class="attr">margin</span>: <span class="num">0 auto</span>;
+}
+
+.<span class="fn">grid</span> {
+  <span class="attr">display</span>: grid;
+  <span class="attr">grid-template-columns</span>: <span class="num">1fr</span>;
+  <span class="attr">gap</span>: var(<span class="attr">--space-4</span>);
+}
+
+<span class="cm">/* Tablet (640px+) */</span>
+@media (min-width: <span class="num">640px</span>) {
+  .<span class="fn">container</span> { <span class="attr">max-width</span>: <span class="num">640px</span>; }
+  .<span class="fn">grid</span> { <span class="attr">grid-template-columns</span>: repeat(<span class="num">2</span>, <span class="num">1fr</span>); }
+}
+
+<span class="cm">/* Desktop (1024px+) */</span>
+@media (min-width: <span class="num">1024px</span>) {
+  .<span class="fn">container</span> { <span class="attr">max-width</span>: <span class="num">1024px</span>; }
+  .<span class="fn">grid</span> { <span class="attr">grid-template-columns</span>: repeat(<span class="num">3</span>, <span class="num">1fr</span>); }
+}
+
+<span class="cm">/* Wide Desktop (1280px+) */</span>
+@media (min-width: <span class="num">1280px</span>) {
+  .<span class="fn">container</span> { <span class="attr">max-width</span>: <span class="num">1280px</span>; }
+  .<span class="fn">grid</span> { <span class="attr">grid-template-columns</span>: repeat(<span class="num">4</span>, <span class="num">1fr</span>); }
+}
+</pre>
+
+        <h4>useMediaQuery Hook</h4>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useState, useEffect } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="kw">export function</span> <span class="fn">useMediaQuery</span>(query) {
+  <span class="kw">const</span> [matches, setMatches] = <span class="fn">useState</span>(
+    () => window.<span class="fn">matchMedia</span>(query).matches
+  );
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">const</span> mql = window.<span class="fn">matchMedia</span>(query);
+    <span class="kw">const</span> <span class="fn">handler</span> = (e) => <span class="fn">setMatches</span>(e.matches);
+    mql.<span class="fn">addEventListener</span>(<span class="str">'change'</span>, handler);
+    <span class="kw">return</span> () => mql.<span class="fn">removeEventListener</span>(<span class="str">'change'</span>, handler);
+  }, [query]);
+
+  <span class="kw">return</span> matches;
+}
+
+<span class="cm">// Usage:
+// const isMobile = useMediaQuery('(max-width: 639px)');
+// const isTablet = useMediaQuery('(min-width: 640px) and (max-width: 1023px)');
+// return isMobile ? &lt;MobileNav /&gt; : &lt;DesktopNav /&gt;;</span>
+</pre>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--              CHAPTER 6: VERSION CONTROL WITH GIT                       -->
+<!-- ====================================================================== -->
+<div class="section theme-purple" id="ch6">
+    <div class="section-header">
+        <span class="section-number">Chapter 06</span>
+        <h2 class="section-title">Version Control with Git</h2>
+    </div>
+
+    <p>Effective Git usage is essential for team collaboration, code review processes, and maintaining a clean project history. Git provides a safety net for developers, an audit trail for features, and the backbone for CI/CD pipelines.</p>
+
+    <h4>Git Fundamentals</h4>
+    <ul>
+        <li><strong>Distributed VCS:</strong> Git is decentralized. Every developer has a full copy of the entire repository history locally, allowing for offline work and extremely fast branching.</li>
+        <li><strong>The Three States:</strong> <em>Working Directory</em> (files you are actively editing), <em>Staging Area / Index</em> (files explicitly marked to be in the next commit), and <em>Repository</em> (the committed history in <span class="inline-code">.git</span>).</li>
+        <li><strong>Snapshots, Not Diffs:</strong> Unlike older systems, Git stores a snapshot of your entire project at each commit. If a file didn't change, Git just stores a reference to the previous identical file.</li>
+    </ul>
+
+    <div id="ch6-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#ede9fe;color:#7c3aed;">🌿</span>
+            6.1 Git Branching Strategy (Git Flow)
+        </h3>
+
+        <p>A branching strategy defines how a team creates, merges, and ships code. Choosing the right one minimizes merge conflicts and aligns with your deployment frequency.</p>
+
+        <h4>Common Branching Models</h4>
+        <ul>
+            <li><strong>Git Flow:</strong> A robust, strict model. Uses <span class="inline-code">main</span> for production releases and <span class="inline-code">develop</span> for ongoing integration. Features branch off <span class="inline-code">develop</span>. Great for scheduled, versioned releases.</li>
+            <li><strong>GitHub Flow:</strong> Simpler and faster. Everything branches off <span class="inline-code">main</span>. You create a feature branch, open a PR, review, and merge back to <span class="inline-code">main</span> for immediate deployment. Ideal for continuous deployment setups.</li>
+            <li><strong>Trunk-Based Development:</strong> Developers push directly to the trunk (<span class="inline-code">main</span>) multiple times a day. Requires strong automated testing and feature flags to hide incomplete work. Maximizes integration speed.</li>
+        </ul>
+
+        <h4>Merge vs. Rebase</h4>
+        <p><strong>Merge</strong> creates a new commit that ties two histories together. It's safe and non-destructive. <strong>Rebase</strong> rewrites history by moving the base of your feature branch to the tip of the target branch, resulting in a clean, linear history. <em>Golden rule:</em> Rebase your local feature branches, but always merge to shared branches like <span class="inline-code">main</span>.</p>
+
+        <div class="diagram-box no-break">
+            <div class="diagram-title">Git Flow Branching Model</div>
+            <div class="flow-row">
+                <div class="flow-box" style="background:#dbeafe;">main<br><small>Production</small></div>
+                <span class="flow-arrow">←</span>
+                <div class="flow-box accent" style="background:#ede9fe;">develop<br><small>Integration</small></div>
+                <span class="flow-arrow">←</span>
+                <div class="flow-box success" style="background:#d1fae5;">feature/*<br><small>New Features</small></div>
+            </div>
+            <div class="flow-row" style="margin-top:12px;">
+                <div class="flow-box" style="background:#fee2e2; border-color:#dc2626; color:#dc2626;">hotfix/*<br><small>Critical Fixes</small></div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box" style="background:#dbeafe;">main</div>
+                <span class="flow-arrow">&</span>
+                <div class="flow-box accent" style="background:#ede9fe;">develop</div>
+            </div>
+        </div>
+
+        <h4>Essential Git Commands for Daily Workflow</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            Daily Git Workflow
+        </div>
+<pre><span class="lang-tag">BASH</span>
+<span class="cm"># ── Start a new feature ──</span>
+git checkout develop
+git pull origin develop
+git checkout -b feature/user-dashboard
+
+<span class="cm"># ── Stage and commit changes ──</span>
+git add src/components/Dashboard/
+git commit -m <span class="str">"feat(dashboard): add revenue chart widget"</span>
+
+<span class="cm"># ── Push and create PR ──</span>
+git push -u origin feature/user-dashboard
+
+<span class="cm"># ── Keep feature branch updated ──</span>
+git checkout feature/user-dashboard
+git rebase develop     <span class="cm"># Preferred over merge for clean history</span>
+
+<span class="cm"># ── Squash commits before merging ──</span>
+git rebase -i HEAD~3   <span class="cm"># Interactive rebase last 3 commits</span>
+
+<span class="cm"># ── Stash work-in-progress ──</span>
+git stash push -m <span class="str">"WIP: dashboard filters"</span>
+git stash pop
+
+<span class="cm"># ── View concise log ──</span>
+git log --oneline --graph --decorate -20
+</pre>
+    </div>
+
+    <div id="ch6-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#ede9fe;color:#7c3aed;">📝</span>
+            6.2 Conventional Commits & PR Best Practices
+        </h3>
+
+        <p>Commit messages are documentation for your future self and your teammates. A good commit message explains <em>why</em> a change was made, not just <em>what</em> changed (the diff already shows the what).</p>
+
+        <h4>The Conventional Commits Specification</h4>
+        <p>A standardized format: <span class="inline-code">&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;</span>. The <em>scope</em> is optional but highly recommended as it indicates the component or feature area (e.g., <span class="inline-code">auth</span>, <span class="inline-code">cart</span>, <span class="inline-code">api</span>). A <span class="inline-code">!</span> after the type/scope (e.g., <span class="inline-code">feat(api)!:</span>) indicates a breaking change.</p>
+
+        <p>Benefits of this standard include automated semantic versioning, easy changelog generation, and a highly scannable Git history.</p>
+
+        <table class="no-break">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Purpose</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge badge-blue">feat</span></td>
+                    <td>New feature for the user</td>
+                    <td><span class="inline-code">feat(auth): add OAuth2 Google login</span></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-green">fix</span></td>
+                    <td>Bug fix for the user</td>
+                    <td><span class="inline-code">fix(cart): resolve quantity overflow</span></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-purple">refactor</span></td>
+                    <td>Code change (no new feature/fix)</td>
+                    <td><span class="inline-code">refactor(api): simplify error handling</span></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-blue">perf</span></td>
+                    <td>Performance improvement</td>
+                    <td><span class="inline-code">perf(list): virtualize product grid</span></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-green">test</span></td>
+                    <td>Adding or fixing tests</td>
+                    <td><span class="inline-code">test(button): add click handler tests</span></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-purple">docs</span></td>
+                    <td>Documentation only</td>
+                    <td><span class="inline-code">docs(readme): add setup instructions</span></td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-blue">chore</span></td>
+                    <td>Build/tooling changes</td>
+                    <td><span class="inline-code">chore(deps): upgrade react to 18.3</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box tip no-break">
+            <div class="info-box-title">💡 PR Review Checklist</div>
+            <p>
+                ✅ Does it follow the component architecture?<br>
+                ✅ Are there unit/integration tests?<br>
+                ✅ Is accessibility (ARIA, keyboard nav) considered?<br>
+                ✅ Are there performance implications?<br>
+                ✅ Is error handling comprehensive?<br>
+                ✅ Are design tokens used instead of hardcoded values?
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--       CHAPTER 7: DEBUGGING, TROUBLESHOOTING & UPGRADING                -->
+<!-- ====================================================================== -->
+<div class="section theme-red" id="ch7">
+    <div class="section-header">
+        <span class="section-number">Chapter 07</span>
+        <h2 class="section-title">Debugging, Troubleshooting & Upgrading</h2>
+    </div>
+
+    <p>Professional debugging skills separate senior developers from juniors. This chapter covers React-specific debugging tools, error boundaries, and upgrading strategies.</p>
+
+    <h4>The Debugging Mindset</h4>
+    <ol>
+        <li><strong>Reproduce:</strong> Find the exact sequence of steps to trigger the bug consistently.</li>
+        <li><strong>Isolate:</strong> Narrow down the problem to a specific component or function. Disable parts of the app until the bug disappears to find the culprit.</li>
+        <li><strong>Identify:</strong> Use DevTools to find the root cause (e.g., stale state, missing dependency, infinite loop).</li>
+        <li><strong>Fix & Verify:</strong> Apply the fix and verify it doesn't break related features.</li>
+    </ol>
+
+    <h4>Common React Bugs</h4>
+    <ul>
+        <li><strong>Infinite Re-renders:</strong> Usually caused by updating state directly in the render body or omitting a dependency array in <span class="inline-code">useEffect</span> that updates state.</li>
+        <li><strong>Stale Closures:</strong> When an event handler or <span class="inline-code">useEffect</span> "remembers" old state because its dependency array is missing values.</li>
+        <li><strong>Memory Leaks:</strong> Forgetting to clear intervals, remove event listeners, or abort fetch requests when a component unmounts.</li>
+    </ul>
+
+    <div id="ch7-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#fee2e2;color:#dc2626;">🔍</span>
+            7.1 React DevTools & Profiler
+        </h3>
+
+        <p>The React DevTools browser extension is essential. It provides a <strong>Components</strong> tab for inspecting the component tree and a <strong>Profiler</strong> tab for identifying performance bottlenecks.</p>
+
+        <h4>Using the Components Tab</h4>
+        <ul>
+            <li><strong>Inspect State & Props:</strong> Click any component to see its current props, state, and hooks in the right panel.</li>
+            <li><strong>Live Editing:</strong> You can edit state values directly in the DevTools to test how your UI reacts to different data without hardcoding it.</li>
+            <li><strong>Highlight Updates:</strong> Enable "Highlight updates when components render" in settings. This flashes borders around components when they re-render, making it easy to spot unnecessary renders.</li>
+        </ul>
+
+        <h4>Using the Profiler Tab</h4>
+        <p>To use the Profiler: click the Record button, perform the slow action in your app, then click Stop. You'll see a flame graph of every component that rendered. The "Why did this render?" feature (enable in settings) will literally tell you "Hook 1 changed" or "Props changed".</p>
+
+        <h4>Key Debugging Techniques</h4>
+        <table class="no-break">
+            <thead>
+                <tr>
+                    <th>Tool</th>
+                    <th>Purpose</th>
+                    <th>Key Feature</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>React DevTools — Components</td>
+                    <td>Inspect component tree, props, state, hooks</td>
+                    <td>Search components, edit state live</td>
+                </tr>
+                <tr>
+                    <td>React DevTools — Profiler</td>
+                    <td>Record and analyze re-renders</td>
+                    <td>Flame graph, "Why did this render?"</td>
+                </tr>
+                <tr>
+                    <td>Chrome DevTools — Network</td>
+                    <td>Inspect API calls, timing, payloads</td>
+                    <td>Throttle network, replay XHR</td>
+                </tr>
+                <tr>
+                    <td>Chrome DevTools — Performance</td>
+                    <td>CPU profiling, paint analysis</td>
+                    <td>Record timeline, find layout thrashing</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">console.table()</span></td>
+                    <td>Display arrays/objects as tables</td>
+                    <td>Better data visualization</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">React.StrictMode</span></td>
+                    <td>Detect unsafe lifecycle, deprecated APIs</td>
+                    <td>Double-invokes effects in dev mode</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Debugging Custom Hook</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            hooks/useWhyDidYouRender.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useRef, useEffect } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="cm">/**
+ * Logs which props changed between renders.
+ * Use during development only.
+ */</span>
+<span class="kw">export function</span> <span class="fn">useWhyDidYouRender</span>(componentName, props) {
+  <span class="kw">const</span> prevProps = <span class="fn">useRef</span>(props);
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">if</span> (prevProps.current) {
+      <span class="kw">const</span> changes = {};
+      <span class="kw">const</span> allKeys = <span class="kw">new</span> <span class="type">Set</span>([
+        ...<span class="type">Object</span>.<span class="fn">keys</span>(prevProps.current),
+        ...<span class="type">Object</span>.<span class="fn">keys</span>(props),
+      ]);
+
+      allKeys.<span class="fn">forEach</span>((key) => {
+        <span class="kw">if</span> (prevProps.current[key] !== props[key]) {
+          changes[key] = {
+            from: prevProps.current[key],
+            to: props[key],
+          };
+        }
+      });
+
+      <span class="kw">if</span> (<span class="type">Object</span>.<span class="fn">keys</span>(changes).length > <span class="num">0</span>) {
+        console.<span class="fn">group</span>(<span class="str">`[WhyRender] ${</span>componentName<span class="str">}`</span>);
+        console.<span class="fn">table</span>(changes);
+        console.<span class="fn">groupEnd</span>();
+      }
+    }
+    prevProps.current = props;
+  });
+}
+
+<span class="cm">// Usage:
+// function UserCard(props) {
+//   useWhyDidYouRender('UserCard', props);
+//   return &lt;div&gt;...&lt;/div&gt;;
+// }</span>
+</pre>
+    </div>
+
+    <div id="ch7-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#fee2e2;color:#dc2626;">🛑</span>
+            7.2 Error Boundaries & Logging
+        </h3>
+
+        <p>Before React 16, a JavaScript error inside a component would corrupt React's internal state and emit cryptic errors, often resulting in a completely blank white screen. <strong>Error boundaries</strong> solve this by catching errors in their child component tree and displaying a fallback UI instead of crashing the entire app.</p>
+
+        <h4>Strategic Placement</h4>
+        <p>Don't just wrap your root <span class="inline-code">&lt;App /&gt;</span> in one giant error boundary. Use them strategically:</p>
+        <ul>
+            <li><strong>Route Level:</strong> Wrap each page component. If the Dashboard crashes, the user can still navigate to Settings using the sidebar.</li>
+            <li><strong>Widget Level:</strong> Wrap individual complex widgets (like a charting component or a third-party ad). If the chart fails, the rest of the page should still function perfectly.</li>
+        </ul>
+
+        <p>Here is a standard Error Boundary implementation (note: Error boundaries <em>must</em> be class components, there is no Hook equivalent yet):</p>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            components/ErrorBoundary.jsx
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> React <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="kw">class</span> <span class="type">ErrorBoundary</span> <span class="kw">extends</span> React.Component {
+  <span class="fn">constructor</span>(props) {
+    <span class="kw">super</span>(props);
+    <span class="kw">this</span>.state = { hasError: <span class="bool">false</span>, error: <span class="kw">null</span>, errorInfo: <span class="kw">null</span> };
+  }
+
+  <span class="kw">static</span> <span class="fn">getDerivedStateFromError</span>(error) {
+    <span class="kw">return</span> { hasError: <span class="bool">true</span>, error };
+  }
+
+  <span class="fn">componentDidCatch</span>(error, errorInfo) {
+    <span class="cm">// Log to an external error reporting service</span>
+    console.<span class="fn">error</span>(<span class="str">'ErrorBoundary caught:'</span>, error, errorInfo);
+
+    <span class="cm">// Example: Send to Sentry or LogRocket</span>
+    <span class="cm">// Sentry.captureException(error, { extra: errorInfo });</span>
+
+    <span class="kw">this</span>.<span class="fn">setState</span>({ errorInfo });
+  }
+
+  <span class="fn">handleReset</span> = () => {
+    <span class="kw">this</span>.<span class="fn">setState</span>({ hasError: <span class="bool">false</span>, error: <span class="kw">null</span>, errorInfo: <span class="kw">null</span> });
+  };
+
+  <span class="fn">render</span>() {
+    <span class="kw">if</span> (<span class="kw">this</span>.state.hasError) {
+      <span class="kw">return</span> (
+        <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"error-fallback"</span> <span class="attr">role</span>=<span class="str">"alert"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;h2&gt;</span>Something went wrong<span class="tag">&lt;/h2&gt;</span>
+          <span class="tag">&lt;p&gt;</span>{<span class="kw">this</span>.state.error?.message}<span class="tag">&lt;/p&gt;</span>
+          <span class="tag">&lt;button</span> <span class="attr">onClick</span>={<span class="kw">this</span>.handleReset}<span class="tag">&gt;</span>
+            Try Again
+          <span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      );
+    }
+    <span class="kw">return this</span>.props.children;
+  }
+}
+
+<span class="kw">export default</span> ErrorBoundary;
+
+<span class="cm">// ─── Usage ───
+// &lt;ErrorBoundary&gt;
+//   &lt;Dashboard /&gt;
+// &lt;/ErrorBoundary&gt;
+//
+// Tip: Wrap each route separately for granular error recovery:
+// &lt;Route path="/dashboard" element={
+//   &lt;ErrorBoundary&gt;&lt;Dashboard /&gt;&lt;/ErrorBoundary&gt;
+// } /&gt;</span>
+</pre>
+
+        <div class="info-box important no-break">
+            <div class="info-box-title">🔑 Key Insight</div>
+            <p>Error boundaries only catch errors during <strong>rendering</strong>, in <strong>lifecycle methods</strong>, and in <strong>constructors</strong>. They do NOT catch errors in event handlers (use try/catch), asynchronous code (use .catch()), or server-side rendering.</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--              CHAPTER 8: SKILLS & EXPERTISE DEEP DIVE                   -->
+<!-- ====================================================================== -->
+<div class="section theme-green" id="ch8">
+    <div class="section-header">
+        <span class="section-number">Chapter 08</span>
+        <h2 class="section-title">Skills & Expertise Deep Dive</h2>
+    </div>
+
+    <p>This chapter provides an in-depth look at the core technical skills required for a React.js Frontend Developer, with comprehensive examples for each competency.</p>
+
+    <h4>The T-Shaped Developer</h4>
+    <p>Modern frontend engineering requires a "T-shaped" skill profile: deep expertise in the core stack (JavaScript, React, CSS) combined with broad knowledge across adjacent disciplines (UX design, backend APIs, CI/CD pipelines, web security, and accessibility).</p>
+
+    <div id="ch8-1" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#d1fae5;color:#059669;">💛</span>
+            8.1 JavaScript ES6+ Mastery
+        </h3>
+
+        <p>React is fundamentally just JavaScript. Unlike frameworks that invent their own templating languages (like Angular or Vue), React relies heavily on native JavaScript features. If you struggle with React, you are likely struggling with JavaScript.</p>
+
+        <h4>Crucial JavaScript Concepts for React</h4>
+        <ul>
+            <li><strong>Immutability:</strong> React uses shallow equality checks (<span class="inline-code">===</span>) to determine if state changed. If you mutate an array (<span class="inline-code">arr.push(x)</span>) instead of creating a new one (<span class="inline-code">[...arr, x]</span>), React won't know it changed and won't re-render.</li>
+            <li><strong>Closures:</strong> Every function component is a closure. It "captures" the props and state from the render in which it was created. This is why asynchronous callbacks sometimes see "old" state.</li>
+            <li><strong>Truthiness:</strong> Understanding how <span class="inline-code">&amp;&amp;</span> and <span class="inline-code">||</span> evaluate expressions is vital for conditional rendering in JSX. (Beware: <span class="inline-code">0 &amp;&amp; &lt;Component/&gt;</span> renders a visible "0").</li>
+        </ul>
+
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            Essential ES6+ Patterns in React
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="cm">// ═══ 1. DESTRUCTURING ═══</span>
+<span class="cm">// Props destructuring in components</span>
+<span class="kw">const</span> <span class="fn">UserProfile</span> = ({ name, email, avatar, role = <span class="str">'user'</span> }) => (
+  <span class="tag">&lt;div&gt;</span>{name} — {role}<span class="tag">&lt;/div&gt;</span>
+);
+
+<span class="cm">// Nested destructuring</span>
+<span class="kw">const</span> { data: { users, pagination: { total } } } = response;
+
+<span class="cm">// ═══ 2. SPREAD / REST OPERATORS ═══</span>
+<span class="cm">// Passing remaining props to a child</span>
+<span class="kw">const</span> <span class="fn">Input</span> = ({ label, error, ...inputProps }) => (
+  <span class="tag">&lt;div&gt;</span>
+    <span class="tag">&lt;label&gt;</span>{label}<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> {...inputProps} <span class="tag">/&gt;</span>
+    {error &amp;&amp; <span class="tag">&lt;span</span> <span class="attr">className</span>=<span class="str">"error"</span><span class="tag">&gt;</span>{error}<span class="tag">&lt;/span&gt;</span>}
+  <span class="tag">&lt;/div&gt;</span>
+);
+
+<span class="cm">// Immutable state updates</span>
+<span class="kw">const</span> updatedUsers = users.<span class="fn">map</span>(user =>
+  user.id === targetId
+    ? { ...user, name: newName }  <span class="cm">// Create new object</span>
+    : user                         <span class="cm">// Keep reference</span>
+);
+
+<span class="cm">// ═══ 3. TEMPLATE LITERALS ═══</span>
+<span class="kw">const</span> apiUrl = <span class="str">`${</span>BASE_URL<span class="str">}/users/${</span>userId<span class="str">}/posts?page=${</span>page<span class="str">}`</span>;
+<span class="kw">const</span> className = <span class="str">`card ${</span>isActive ? <span class="str">'active'</span> : <span class="str">''</span><span class="str">} ${</span>size<span class="str">}`</span>;
+
+<span class="cm">// ═══ 4. OPTIONAL CHAINING & NULLISH COALESCING ═══</span>
+<span class="kw">const</span> city    = user?.address?.city ?? <span class="str">'Unknown'</span>;
+<span class="kw">const</span> handler = config?.events?.onClick ?? <span class="fn">noop</span>;
+
+<span class="cm">// ═══ 5. ARRAY METHODS ═══</span>
+<span class="kw">const</span> activeAdmins = users
+  .<span class="fn">filter</span>(u => u.isActive &amp;&amp; u.role === <span class="str">'admin'</span>)
+  .<span class="fn">map</span>(u => ({ id: u.id, name: u.name }))
+  .<span class="fn">sort</span>((a, b) => a.name.<span class="fn">localeCompare</span>(b.name));
+
+<span class="cm">// ═══ 6. PROMISES & ASYNC/AWAIT ═══</span>
+<span class="kw">async function</span> <span class="fn">fetchUserWithPosts</span>(userId) {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> [userRes, postsRes] = <span class="kw">await</span> <span class="type">Promise</span>.<span class="fn">all</span>([
+      <span class="fn">fetch</span>(<span class="str">`/api/users/${</span>userId<span class="str">}`</span>),
+      <span class="fn">fetch</span>(<span class="str">`/api/users/${</span>userId<span class="str">}/posts`</span>),
+    ]);
+
+    <span class="kw">const</span> user  = <span class="kw">await</span> userRes.<span class="fn">json</span>();
+    <span class="kw">const</span> posts = <span class="kw">await</span> postsRes.<span class="fn">json</span>();
+
+    <span class="kw">return</span> { ...user, posts };
+  } <span class="kw">catch</span> (error) {
+    console.<span class="fn">error</span>(<span class="str">'Failed to fetch user data:'</span>, error);
+    <span class="kw">throw</span> error;
+  }
+}
+
+<span class="cm">// ═══ 7. MODULES (IMPORT/EXPORT) ═══</span>
+<span class="cm">// Named exports (preferred for utilities)</span>
+<span class="kw">export</span> <span class="kw">const</span> <span class="fn">formatDate</span> = (date) => { <span class="cm">/* ... */</span> };
+<span class="kw">export</span> <span class="kw">const</span> <span class="fn">formatCurrency</span> = (amount) => { <span class="cm">/* ... */</span> };
+
+<span class="cm">// Default export (preferred for components)</span>
+<span class="kw">export default</span> <span class="kw">function</span> <span class="fn">Dashboard</span>() { <span class="cm">/* ... */</span> }
+</pre>
+    </div>
+
+    <div id="ch8-2" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#d1fae5;color:#059669;">⚛️</span>
+            8.2 React Hooks & State Management
+        </h3>
+
+        <p>Hooks revolutionized React by allowing functional components to hold state and manage side effects, effectively replacing class components. They promote better logic reuse and cleaner code architecture.</p>
+
+        <h4>The Mental Model</h4>
+        <p>Don't think of hooks as direct replacements for lifecycle methods (<span class="inline-code">componentDidMount</span>, etc.). Think of them as <strong>synchronization mechanisms</strong>. A component takes props and state, and renders UI. The <span class="inline-code">useEffect</span> hook synchronizes that component with an external system (like the DOM, a network, or a third-party library).</p>
+
+        <h4>Core Hooks Reference</h4>
+        <table class="no-break">
+            <thead>
+                <tr>
+                    <th>Hook</th>
+                    <th>Purpose</th>
+                    <th>Common Use Case</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="inline-code">useState</span></td>
+                    <td>Local component state</td>
+                    <td>Form inputs, toggles, counters</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useEffect</span></td>
+                    <td>Side effects (API calls, subscriptions)</td>
+                    <td>Fetch data on mount, event listeners</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useContext</span></td>
+                    <td>Consume context values</td>
+                    <td>Theme, auth, locale</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useReducer</span></td>
+                    <td>Complex state logic</td>
+                    <td>Forms with validation, multi-step flows</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useRef</span></td>
+                    <td>Mutable ref, DOM access</td>
+                    <td>Focus input, store previous value</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">useId</span></td>
+                    <td>Generate unique IDs</td>
+                    <td>Accessible form labels, SSR-safe IDs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>useReducer: Complex Form State Management</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            hooks/useFormReducer.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { useReducer, useCallback } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="cm">// Action types</span>
+<span class="kw">const</span> ACTIONS = {
+  SET_FIELD:     <span class="str">'SET_FIELD'</span>,
+  SET_ERROR:     <span class="str">'SET_ERROR'</span>,
+  CLEAR_ERRORS:  <span class="str">'CLEAR_ERRORS'</span>,
+  RESET:         <span class="str">'RESET'</span>,
+  SET_SUBMITTING:<span class="str">'SET_SUBMITTING'</span>,
+};
+
+<span class="kw">function</span> <span class="fn">formReducer</span>(state, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> ACTIONS.SET_FIELD:
+      <span class="kw">return</span> {
+        ...state,
+        values: { ...state.values, [action.field]: action.value },
+        errors: { ...state.errors, [action.field]: <span class="kw">null</span> },
+      };
+    <span class="kw">case</span> ACTIONS.SET_ERROR:
+      <span class="kw">return</span> {
+        ...state,
+        errors: { ...state.errors, [action.field]: action.error },
+      };
+    <span class="kw">case</span> ACTIONS.CLEAR_ERRORS:
+      <span class="kw">return</span> { ...state, errors: {} };
+    <span class="kw">case</span> ACTIONS.SET_SUBMITTING:
+      <span class="kw">return</span> { ...state, isSubmitting: action.value };
+    <span class="kw">case</span> ACTIONS.RESET:
+      <span class="kw">return</span> { values: action.initialValues, errors: {}, isSubmitting: <span class="bool">false</span> };
+    <span class="kw">default</span>:
+      <span class="kw">return</span> state;
+  }
+}
+
+<span class="kw">export function</span> <span class="fn">useForm</span>(initialValues, validate) {
+  <span class="kw">const</span> [state, dispatch] = <span class="fn">useReducer</span>(formReducer, {
+    values: initialValues,
+    errors: {},
+    isSubmitting: <span class="bool">false</span>,
+  });
+
+  <span class="kw">const</span> <span class="fn">setField</span> = <span class="fn">useCallback</span>((field, value) => {
+    dispatch({ type: ACTIONS.SET_FIELD, field, value });
+  }, []);
+
+  <span class="kw">const</span> <span class="fn">handleSubmit</span> = <span class="fn">useCallback</span>((onSubmit) => <span class="kw">async</span> (e) => {
+    e.<span class="fn">preventDefault</span>();
+    <span class="kw">const</span> errors = validate ? <span class="fn">validate</span>(state.values) : {};
+
+    <span class="kw">if</span> (<span class="type">Object</span>.<span class="fn">keys</span>(errors).length > <span class="num">0</span>) {
+      <span class="type">Object</span>.<span class="fn">entries</span>(errors).<span class="fn">forEach</span>(([field, error]) => {
+        dispatch({ type: ACTIONS.SET_ERROR, field, error });
+      });
+      <span class="kw">return</span>;
+    }
+
+    dispatch({ type: ACTIONS.SET_SUBMITTING, value: <span class="bool">true</span> });
+    <span class="kw">try</span> {
+      <span class="kw">await</span> <span class="fn">onSubmit</span>(state.values);
+    } <span class="kw">finally</span> {
+      dispatch({ type: ACTIONS.SET_SUBMITTING, value: <span class="bool">false</span> });
+    }
+  }, [state.values, validate]);
+
+  <span class="kw">return</span> { ...state, setField, handleSubmit };
+}
+</pre>
+
+        <h4>Redux Toolkit: Modern Redux Example</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            store/slices/userSlice.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { createSlice, createAsyncThunk } <span class="imp">from</span> <span class="str">'@reduxjs/toolkit'</span>;
+<span class="imp">import</span> apiClient <span class="imp">from</span> <span class="str">'../../services/apiClient'</span>;
+
+<span class="cm">// Async thunk for fetching users</span>
+<span class="kw">export const</span> fetchUsers = <span class="fn">createAsyncThunk</span>(
+  <span class="str">'users/fetchAll'</span>,
+  <span class="kw">async</span> (_, { rejectWithValue }) => {
+    <span class="kw">try</span> {
+      <span class="kw">const</span> response = <span class="kw">await</span> apiClient.<span class="fn">get</span>(<span class="str">'/users'</span>);
+      <span class="kw">return</span> response.data;
+    } <span class="kw">catch</span> (error) {
+      <span class="kw">return</span> <span class="fn">rejectWithValue</span>(error.response?.data?.message);
+    }
+  }
+);
+
+<span class="kw">const</span> userSlice = <span class="fn">createSlice</span>({
+  name: <span class="str">'users'</span>,
+  initialState: {
+    list: [],
+    status: <span class="str">'idle'</span>,  <span class="cm">// 'idle' | 'loading' | 'succeeded' | 'failed'</span>
+    error: <span class="kw">null</span>,
+    selectedUser: <span class="kw">null</span>,
+  },
+  reducers: {
+    <span class="fn">selectUser</span>(state, action) {
+      state.selectedUser = state.list.<span class="fn">find</span>(
+        u => u.id === action.payload
+      ) || <span class="kw">null</span>;
+    },
+    <span class="fn">clearSelection</span>(state) {
+      state.selectedUser = <span class="kw">null</span>;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .<span class="fn">addCase</span>(fetchUsers.pending, (state) => {
+        state.status = <span class="str">'loading'</span>;
+        state.error = <span class="kw">null</span>;
+      })
+      .<span class="fn">addCase</span>(fetchUsers.fulfilled, (state, action) => {
+        state.status = <span class="str">'succeeded'</span>;
+        state.list = action.payload;
+      })
+      .<span class="fn">addCase</span>(fetchUsers.rejected, (state, action) => {
+        state.status = <span class="str">'failed'</span>;
+        state.error = action.payload;
+      });
+  },
+});
+
+<span class="kw">export const</span> { selectUser, clearSelection } = userSlice.actions;
+<span class="kw">export default</span> userSlice.reducer;
+</pre>
+
+        <h4>Context API: When Redux is Overkill</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            context/AuthContext.jsx
+        </div>
+<pre><span class="lang-tag">JSX</span>
+<span class="imp">import</span> { createContext, useContext, useReducer, useCallback } <span class="imp">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> AuthContext = <span class="fn">createContext</span>();
+
+<span class="kw">const</span> initialState = { user: <span class="kw">null</span>, isAuthenticated: <span class="bool">false</span>, token: <span class="kw">null</span> };
+
+<span class="kw">function</span> <span class="fn">authReducer</span>(state, action) {
+  <span class="kw">switch</span> (action.type) {
+    <span class="kw">case</span> <span class="str">'LOGIN'</span>:
+      <span class="kw">return</span> { user: action.payload.user, isAuthenticated: <span class="bool">true</span>,
+               token: action.payload.token };
+    <span class="kw">case</span> <span class="str">'LOGOUT'</span>:
+      <span class="kw">return</span> initialState;
+    <span class="kw">case</span> <span class="str">'UPDATE_USER'</span>:
+      <span class="kw">return</span> { ...state, user: { ...state.user, ...action.payload } };
+    <span class="kw">default</span>:
+      <span class="kw">return</span> state;
+  }
+}
+
+<span class="kw">export function</span> <span class="fn">AuthProvider</span>({ children }) {
+  <span class="kw">const</span> [state, dispatch] = <span class="fn">useReducer</span>(authReducer, initialState);
+
+  <span class="kw">const</span> <span class="fn">login</span> = <span class="fn">useCallback</span>(<span class="kw">async</span> (email, password) => {
+    <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api/auth/login'</span>, {
+      method: <span class="str">'POST'</span>,
+      headers: { <span class="str">'Content-Type'</span>: <span class="str">'application/json'</span> },
+      body: <span class="type">JSON</span>.<span class="fn">stringify</span>({ email, password }),
+    });
+    <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
+    localStorage.<span class="fn">setItem</span>(<span class="str">'authToken'</span>, data.token);
+    dispatch({ type: <span class="str">'LOGIN'</span>, payload: data });
+  }, []);
+
+  <span class="kw">const</span> <span class="fn">logout</span> = <span class="fn">useCallback</span>(() => {
+    localStorage.<span class="fn">removeItem</span>(<span class="str">'authToken'</span>);
+    dispatch({ type: <span class="str">'LOGOUT'</span> });
+  }, []);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;AuthContext.Provider</span> <span class="attr">value</span>={{ ...state, login, logout }}<span class="tag">&gt;</span>
+      {children}
+    <span class="tag">&lt;/AuthContext.Provider&gt;</span>
+  );
+}
+
+<span class="kw">export const</span> <span class="fn">useAuth</span> = () => {
+  <span class="kw">const</span> context = <span class="fn">useContext</span>(AuthContext);
+  <span class="kw">if</span> (!context) <span class="kw">throw new</span> <span class="type">Error</span>(<span class="str">'useAuth must be used within AuthProvider'</span>);
+  <span class="kw">return</span> context;
+};
+</pre>
+
+        <div class="info-box note no-break">
+            <div class="info-box-title">📝 Redux vs Context API — Decision Guide</div>
+            <p>
+                <strong>Use Context API</strong> for: theme, locale, auth — low-frequency state shared across many components.<br>
+                <strong>Use Redux Toolkit</strong> for: complex state with many actions, middleware needs (logging, persistence), DevTools time-travel debugging, large team collaboration.
+            </p>
+        </div>
+    </div>
+
+    <div id="ch8-3" class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#d1fae5;color:#059669;">🛠️</span>
+            8.3 Build Tools: Webpack, Babel & Vite
+        </h3>
+
+        <p>A React application is rarely shipped as raw source code. Understanding your build tools empowers you to optimize bundle sizes, configure aliases, and debug complex build issues.</p>
+
+        <h4>The Shift from Webpack to Vite</h4>
+        <p>Historically, <strong>Webpack</strong> was the dominant bundler. It crawls your entire application, resolving every <span class="inline-code">import</span> and building a massive dependency graph before serving the app. As apps grow, this process becomes painfully slow.</p>
+        <p><strong>Vite</strong> solves this by leveraging native ES modules in modern browsers. During development, Vite serves your source code over native ESM and only transforms files on-demand as the browser requests them. For production, Vite uses Rollup to create highly optimized, chunked static assets.</p>
+
+        <table class="no-break">
+            <thead>
+                <tr>
+                    <th>Tool</th>
+                    <th>Role</th>
+                    <th>Key Configuration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Webpack</strong></td>
+                    <td>Module bundler — resolves dependencies and creates optimized output bundles</td>
+                    <td>Entry points, loaders, plugins, code splitting</td>
+                </tr>
+                <tr>
+                    <td><strong>Babel</strong></td>
+                    <td>JavaScript compiler — transforms JSX and modern JS to browser-compatible code</td>
+                    <td>Presets (env, react), plugins, polyfills</td>
+                </tr>
+                <tr>
+                    <td><strong>Vite</strong></td>
+                    <td>Next-gen build tool — ultra-fast dev server with native ES modules</td>
+                    <td>vite.config.js, plugins, proxy, aliases</td>
+                </tr>
+                <tr>
+                    <td><strong>ESLint</strong></td>
+                    <td>Linter — enforces code quality and consistency rules</td>
+                    <td>.eslintrc, plugins (react-hooks), rules</td>
+                </tr>
+                <tr>
+                    <td><strong>Prettier</strong></td>
+                    <td>Code formatter — ensures consistent code style</td>
+                    <td>.prettierrc, format-on-save integration</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Vite Configuration Example</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            vite.config.js
+        </div>
+<pre><span class="lang-tag">JavaScript</span>
+<span class="imp">import</span> { defineConfig } <span class="imp">from</span> <span class="str">'vite'</span>;
+<span class="imp">import</span> react <span class="imp">from</span> <span class="str">'@vitejs/plugin-react'</span>;
+<span class="imp">import</span> path <span class="imp">from</span> <span class="str">'path'</span>;
+
+<span class="kw">export default</span> <span class="fn">defineConfig</span>({
+  plugins: [<span class="fn">react</span>()],
+  resolve: {
+    alias: {
+      <span class="str">'@'</span>:          path.<span class="fn">resolve</span>(__dirname, <span class="str">'./src'</span>),
+      <span class="str">'@components'</span>: path.<span class="fn">resolve</span>(__dirname, <span class="str">'./src/components'</span>),
+      <span class="str">'@hooks'</span>:      path.<span class="fn">resolve</span>(__dirname, <span class="str">'./src/hooks'</span>),
+      <span class="str">'@services'</span>:   path.<span class="fn">resolve</span>(__dirname, <span class="str">'./src/services'</span>),
+    },
+  },
+  server: {
+    port: <span class="num">3000</span>,
+    proxy: {
+      <span class="str">'/api'</span>: {
+        target: <span class="str">'http://localhost:8080'</span>,
+        changeOrigin: <span class="bool">true</span>,
+        rewrite: (path) => path.<span class="fn">replace</span>(<span class="str">/^\/api/</span>, <span class="str">''</span>),
+      },
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        <span class="cm">// Split vendor chunks for better caching</span>
+        <span class="fn">manualChunks</span>(id) {
+          <span class="kw">if</span> (id.<span class="fn">includes</span>(<span class="str">'node_modules'</span>)) {
+            <span class="kw">if</span> (id.<span class="fn">includes</span>(<span class="str">'react'</span>)) <span class="kw">return</span> <span class="str">'react-vendor'</span>;
+            <span class="kw">if</span> (id.<span class="fn">includes</span>(<span class="str">'lodash'</span>)) <span class="kw">return</span> <span class="str">'lodash'</span>;
+            <span class="kw">return</span> <span class="str">'vendor'</span>;
+          }
+        },
+      },
+    },
+    sourcemap: <span class="bool">true</span>,
+    chunkSizeWarningLimit: <span class="num">600</span>,
+  },
+});
+</pre>
+
+        <h4>ESLint Configuration for React</h4>
+        <div class="file-header">
+            <span class="file-dot dot-red"></span>
+            <span class="file-dot dot-yellow"></span>
+            <span class="file-dot dot-green"></span>
+            .eslintrc.json
+        </div>
+<pre><span class="lang-tag">JSON</span>
+{
+  <span class="attr">"extends"</span>: [
+    <span class="str">"eslint:recommended"</span>,
+    <span class="str">"plugin:react/recommended"</span>,
+    <span class="str">"plugin:react-hooks/recommended"</span>,
+    <span class="str">"plugin:jsx-a11y/recommended"</span>,
+    <span class="str">"prettier"</span>
+  ],
+  <span class="attr">"plugins"</span>: [<span class="str">"react"</span>, <span class="str">"react-hooks"</span>, <span class="str">"jsx-a11y"</span>],
+  <span class="attr">"rules"</span>: {
+    <span class="str">"react/prop-types"</span>: <span class="str">"warn"</span>,
+    <span class="str">"react-hooks/rules-of-hooks"</span>: <span class="str">"error"</span>,
+    <span class="str">"react-hooks/exhaustive-deps"</span>: <span class="str">"warn"</span>,
+    <span class="str">"no-unused-vars"</span>: [<span class="str">"warn"</span>, { <span class="str">"argsIgnorePattern"</span>: <span class="str">"^_"</span> }],
+    <span class="str">"prefer-const"</span>: <span class="str">"error"</span>,
+    <span class="str">"no-var"</span>: <span class="str">"error"</span>
+  },
+  <span class="attr">"settings"</span>: {
+    <span class="str">"react"</span>: { <span class="str">"version"</span>: <span class="str">"detect"</span> }
+  }
+}
+</pre>
+    </div>
+
+    <hr>
+
+    <div class="subsection">
+        <h3 class="subsection-title">
+            <span class="icon" style="background:#d1fae5;color:#059669;">📋</span>
+            Quick Reference: Skills Proficiency Matrix
+        </h3>
+
+        <table class="no-break">
+            <thead>
+                <tr>
+                    <th>Skill Area</th>
+                    <th>Core Technologies</th>
+                    <th>Key Competencies</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>JavaScript</strong></td>
+                    <td>ES6+, TypeScript (bonus)</td>
+                    <td>Destructuring, async/await, closures, prototypes</td>
+                </tr>
+                <tr>
+                    <td><strong>React Core</strong></td>
+                    <td>React 18+, JSX, Virtual DOM</td>
+                    <td>Hooks, lifecycle, reconciliation, Fiber</td>
+                </tr>
+                <tr>
+                    <td><strong>State Management</strong></td>
+                    <td>Redux Toolkit, Context API, Zustand</td>
+                    <td>Store design, selectors, middleware, immutability</td>
+                </tr>
+                <tr>
+                    <td><strong>Styling</strong></td>
+                    <td>CSS Modules, Styled Components, Tailwind</td>
+                    <td>Responsive design, theming, animations</td>
+                </tr>
+                <tr>
+                    <td><strong>Testing</strong></td>
+                    <td>Jest, React Testing Library, Cypress</td>
+                    <td>Unit, integration, E2E, mocking</td>
+                </tr>
+                <tr>
+                    <td><strong>Build Tools</strong></td>
+                    <td>Vite, Webpack, Babel, ESLint</td>
+                    <td>Configuration, optimization, tree-shaking</td>
+                </tr>
+                <tr>
+                    <td><strong>Version Control</strong></td>
+                    <td>Git, GitHub/GitLab</td>
+                    <td>Branching, rebasing, PRs, CI/CD</td>
+                </tr>
+                <tr>
+                    <td><strong>Performance</strong></td>
+                    <td>Lighthouse, DevTools Profiler</td>
+                    <td>Code splitting, memoization, virtualization</td>
+                </tr>
+                <tr>
+                    <td><strong>Accessibility</strong></td>
+                    <td>ARIA, WCAG 2.1, axe-core</td>
+                    <td>Keyboard nav, screen readers, semantic HTML</td>
+                </tr>
+                <tr>
+                    <td><strong>Soft Skills</strong></td>
+                    <td>—</td>
+                    <td>Code reviews, documentation, communication, mentoring</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- ================= FOOTER ================= -->
+<div class="doc-footer">
+    <p><strong>React.js Frontend Developer — Comprehensive Guide</strong></p>
+    <p>Covers all key responsibilities, skills, and best practices with 40+ production-ready code examples.</p>
+    <p style="margin-top:10px;">Generated June 2026 · React 18+ · ES2024</p>
+    <p style="margin-top:6px; color:#94a3b8;">Open this file in a browser and use <strong>Ctrl+P → Save as PDF</strong> to export.</p>
+</div>
+
+</div><!-- /.main-content -->
+
+<!-- ===== SIDEBAR JAVASCRIPT ===== -->
+<script>
+(function() {
+    'use strict';
+
+    const sidebar      = document.getElementById('sidebar');
+    const toggle       = document.getElementById('sidebarToggle');
+    const overlay      = document.getElementById('sidebarOverlay');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link[data-target]');
+
+    // ── Mobile Toggle ──
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('visible');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('visible');
+    }
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    });
+
+    overlay.addEventListener('click', closeSidebar);
+
+    // ── Smooth Scroll on Link Click ──
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-target');
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Close sidebar on mobile after click
+                if (window.innerWidth < 1024) {
+                    closeSidebar();
+                }
+            }
+        });
+    });
+
+    // ── Scroll Spy: Highlight Active Section ──
+    const targetIds = Array.from(sidebarLinks).map(l => l.getAttribute('data-target'));
+    const sections  = targetIds.map(id => document.getElementById(id)).filter(Boolean);
+
+    function updateActiveLink() {
+        let currentId = '';
+        const scrollY = window.scrollY + 120; // offset for better UX
+
+        for (let i = sections.length - 1; i >= 0; i--) {
+            if (sections[i].offsetTop <= scrollY) {
+                currentId = sections[i].id;
+                break;
+            }
+        }
+
+        sidebarLinks.forEach(link => {
+            if (link.getAttribute('data-target') === currentId) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Keep active link visible in sidebar
+        const activeLink = sidebar.querySelector('.sidebar-link.active');
+        if (activeLink) {
+            const sidebarRect = sidebar.getBoundingClientRect();
+            const linkRect    = activeLink.getBoundingClientRect();
+            if (linkRect.top < sidebarRect.top + 80 || linkRect.bottom > sidebarRect.bottom - 20) {
+                activeLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    }
+
+    // Throttle scroll handler
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                updateActiveLink();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Initial check
+    updateActiveLink();
+})();
+</script>
+
+</body>
+</html>
