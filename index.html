@@ -796,6 +796,46 @@
             color: #15803d;
             margin-bottom: 6px;
         }
+
+        /* ===== RESPONSIVE STYLES (MOBILE) ===== */
+        @media (max-width: 768px) {
+            .container, .toc, .section {
+                padding: 24px 20px;
+            }
+            .cover-title {
+                font-size: 32px;
+            }
+            .cover-subtitle {
+                font-size: 16px;
+            }
+            .section-title {
+                font-size: 24px;
+            }
+            .toc h2 {
+                font-size: 22px;
+            }
+            .kv-grid {
+                grid-template-columns: 1fr;
+            }
+            pre {
+                padding: 16px;
+                font-size: 11.5px;
+            }
+            .doc-footer {
+                padding: 24px 20px;
+            }
+            .cover-page {
+                padding: 40px 20px;
+            }
+            .cover-meta {
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+            }
+            .diagram-box {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
