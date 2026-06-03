@@ -22,3 +22,9 @@
 .info-box.important .info-box-title { color: var(--accent); }
 
 .info-box p { margin-bottom: 0; font-size: 13px; }
+
+@media (max-width: 768px) {
+  .info-box {
+    padding: 14px 16px;
+  }
+}

@@ -27,3 +27,16 @@ tbody td {
 }
 tbody tr:nth-child(even) { background: var(--bg-alt); }
 tbody tr:hover { background: var(--primary-light); }
+
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+  thead th {
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+  tbody td {
+    padding: 8px 12px;
+  }
+}

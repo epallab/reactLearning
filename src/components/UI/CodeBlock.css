@@ -85,5 +85,20 @@ pre.has-header {
 .tag { color: #f38ba8; }
 .attr { color: #89b4fa; }
 .type { color: #f9e2af; }
-.bool { color: #fab387; }
 .imp { color: #cba6f7; }
+
+@media (max-width: 768px) {
+  pre {
+    padding: 16px 12px;
+    font-size: 11.5px;
+  }
+  .file-header {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  .lang-tag {
+    top: 6px;
+    right: 8px;
+    font-size: 9px;
+  }
+}
