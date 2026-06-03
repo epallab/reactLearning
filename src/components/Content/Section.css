@@ -1,0 +1,65 @@
+.section {
+  padding: 50px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.section-header {
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid;
+}
+.section-number {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+  display: block;
+}
+.section-title {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+}
+.theme-blue .section-header { border-color: var(--primary); }
+.theme-blue .section-number { color: var(--primary); }
+.theme-purple .section-header { border-color: var(--accent); }
+.theme-purple .section-number { color: var(--accent); }
+.theme-green .section-header { border-color: var(--success); }
+.theme-green .section-number { color: var(--success); }
+.theme-orange .section-header { border-color: var(--warning); }
+.theme-orange .section-number { color: var(--warning); }
+.theme-red .section-header { border-color: var(--danger); }
+.theme-red .section-number { color: var(--danger); }
+.theme-teal .section-header { border-color: #0d9488; }
+.theme-teal .section-number { color: #0d9488; }
+
+/* Subsection styles */
+.subsection {
+  margin-bottom: 35px;
+}
+.subsection-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.subsection-title .icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .section { padding: 24px 20px; }
+  .section-title { font-size: 24px; }
+}

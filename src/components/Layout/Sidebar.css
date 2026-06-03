@@ -1,0 +1,244 @@
+/* ===== Sidebar ===== */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: #0f172a;
+  color: #94a3b8;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Sidebar scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* ===== Brand Area ===== */
+.sidebar-brand {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 18px;
+  background: #0f172a;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  z-index: 10;
+}
+
+.sidebar-brand svg {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  animation: spin-slow 12s linear infinite;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sidebar-brand-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f1f5f9;
+  white-space: nowrap;
+}
+
+.sidebar-brand-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+/* ===== Theme Toggle ===== */
+.theme-toggle {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: rgba(148, 163, 184, 0.08);
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.theme-toggle:hover {
+  background: rgba(148, 163, 184, 0.15);
+  border-color: rgba(148, 163, 184, 0.3);
+  transform: scale(1.1);
+}
+
+/* ===== Sidebar Navigation ===== */
+.sidebar-nav {
+  padding: 12px 0;
+}
+
+.sidebar-section-label {
+  display: block;
+  padding: 16px 20px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #475569;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: rgba(148, 163, 184, 0.08);
+  margin: 6px 16px;
+}
+
+/* ===== Sidebar Links ===== */
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.sidebar-link:hover {
+  color: #e2e8f0;
+  background: rgba(148, 163, 184, 0.06);
+}
+
+.sidebar-link.active {
+  color: #60a5fa;
+  background: rgba(96, 165, 250, 0.08);
+  border-left-color: #60a5fa;
+}
+
+.sidebar-link .sb-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  min-width: 22px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.sidebar-link.active .sb-num {
+  color: #60a5fa;
+}
+
+/* ===== Sub-links ===== */
+.sidebar-link.sb-sub {
+  padding-left: 48px;
+  font-size: 12.5px;
+  font-weight: 400;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.sidebar-link.sb-sub .sb-num {
+  font-size: 10px;
+  min-width: 26px;
+}
+
+/* ===== Mobile Toggle Button ===== */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.sidebar-toggle:hover {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.sidebar-toggle.active {
+  background: #1e293b;
+  color: #60a5fa;
+}
+
+/* ===== Sidebar Overlay ===== */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 999;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 1023px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle {
+    display: flex;
+  }
+}

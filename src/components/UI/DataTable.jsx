@@ -1,0 +1,16 @@
+import './DataTable.css';
+
+export default function DataTable({ headers, children }) {
+  return (
+    <div className="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            {headers.map((h, i) => <th key={i}>{h}</th>)}
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </table>
+    </div>
+  );
+}

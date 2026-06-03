@@ -1,0 +1,105 @@
+export const chapters = [
+  {
+    id: 'chapter-1',
+    number: '01',
+    title: 'Scalable Components',
+    sectionLabel: 'Key Responsibilities',
+    subs: [
+      { id: 'atomic-design', number: '1.1', title: 'Atomic Design' },
+      { id: 'scalable-component-example', number: '1.2', title: 'Full Component Example' },
+      { id: 'react-server-components', number: '1.3', title: 'React Server Components (RSC)' },
+      { id: 'advanced-prop-patterns', number: '1.4', title: 'Advanced Prop Patterns' },
+    ],
+  },
+  {
+    id: 'chapter-2',
+    number: '02',
+    title: 'API Integration & Data Flow',
+    subs: [
+      { id: 'use-api-hook', number: '2.1', title: 'Custom Hook: useApi' },
+      { id: 'axios-interceptors', number: '2.2', title: 'Axios Interceptors' },
+      { id: 'state-management-server-data', number: '2.3', title: 'State Mgmt for Server Data' },
+      { id: 'websockets-real-time', number: '2.4', title: 'WebSockets & Real-Time' },
+    ],
+  },
+  {
+    id: 'chapter-3',
+    number: '03',
+    title: 'Clean & Reusable Code',
+    subs: [
+      { id: 'custom-hooks', number: '3.1', title: 'Custom Hooks Pattern' },
+      { id: 'compound-components', number: '3.2', title: 'Compound Components' },
+      { id: 'higher-order-components', number: '3.3', title: 'Higher-Order Components' },
+      { id: 'dependency-injection-context', number: '3.4', title: 'DI via Context' },
+    ],
+  },
+  {
+    id: 'chapter-4',
+    number: '04',
+    title: 'Performance & Lazy Loading',
+    subs: [
+      { id: 'lazy-loading', number: '4.1', title: 'React.lazy & Suspense' },
+      { id: 'memoization', number: '4.2', title: 'Memoization Patterns' },
+      { id: 'virtualization', number: '4.3', title: 'Virtualization & Large Lists' },
+      { id: 'concurrent-features', number: '4.4', title: 'React 18 Concurrent Features' },
+    ],
+  },
+  {
+    id: 'collaborating-with-designers',
+    number: '05',
+    title: 'UI/UX Collaboration',
+    sectionLabel: 'Skills & Expertise',
+    subs: [
+      { id: 'design-tokens-theming', number: '5.1', title: 'Design Tokens & Theming' },
+      { id: 'responsive-design', number: '5.2', title: 'Responsive Design' },
+      { id: 'accessibility-first', number: '5.3', title: 'Accessibility (a11y) First' },
+      { id: 'micro-animations', number: '5.4', title: 'Micro-Animations' },
+    ],
+  },
+  {
+    id: 'version-control-git',
+    number: '06',
+    title: 'Version Control (Git)',
+    subs: [
+      { id: 'git-branching-strategy', number: '6.1', title: 'Branching Strategy' },
+      { id: 'conventional-commits', number: '6.2', title: 'Conventional Commits' },
+      { id: 'automated-checks-cicd', number: '6.3', title: 'Automated Checks (CI/CD)' },
+      { id: 'advanced-git-techniques', number: '6.4', title: 'Advanced Git Techniques' },
+    ],
+  },
+  {
+    id: 'debugging-troubleshooting',
+    number: '07',
+    title: 'Debugging & Upgrading',
+    subs: [
+      { id: 'react-devtools-profiler', number: '7.1', title: 'DevTools & Profiler' },
+      { id: 'error-boundaries-logging', number: '7.2', title: 'Error Boundaries' },
+      { id: 'upgrading-react', number: '7.3', title: 'Upgrading React Versions' },
+      { id: 'end-to-end-testing', number: '7.4', title: 'End-to-End Testing' },
+    ],
+  },
+  {
+    id: 'skills-expertise-deep-dive',
+    number: '08',
+    title: 'Skills Deep Dive',
+    subs: [
+      { id: 'javascript-es6-mastery', number: '8.1', title: 'JavaScript ES6+' },
+      { id: 'react-hooks-state-management', number: '8.2', title: 'Hooks & State Mgmt' },
+      { id: 'build-tools', number: '8.3', title: 'Build Tools' },
+      { id: 'testing-strategy', number: '8.4', title: 'Testing Strategy' },
+      { id: 'typescript-basics', number: '8.5', title: 'TypeScript Basics' },
+    ],
+  },
+  {
+    id: 'react-19-features',
+    number: '09',
+    title: 'React 19 & The Future',
+    sectionLabel: 'The Cutting Edge',
+    subs: [
+      { id: 'react-compiler', number: '9.1', title: 'The React Compiler' },
+      { id: 'server-actions', number: '9.2', title: 'Server Actions' },
+      { id: 'use-hook', number: '9.3', title: 'The new "use" Hook' },
+      { id: 'document-metadata', number: '9.4', title: 'Document Metadata' },
+    ],
+  },
+];
