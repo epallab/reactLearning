@@ -11,6 +11,7 @@ import Chapter6 from './pages/Chapter6';
 import Chapter7 from './pages/Chapter7';
 import Chapter8 from './pages/Chapter8';
 import Chapter9 from './pages/Chapter9';
+import Chapter10 from './pages/Chapter10';
 import { chapters } from './data/chapters';
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
       <Chapter7 />
       <Chapter8 />
       <Chapter9 />
+      <Chapter10 />
       <Footer />
     </Layout>
   );

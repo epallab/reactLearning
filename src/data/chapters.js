@@ -102,4 +102,21 @@ export const chapters = [
       { id: 'document-metadata', number: '9.4', title: 'Document Metadata' },
     ],
   },
+  {
+    id: 'important-dsa',
+    number: '10',
+    title: 'Important DSA in JavaScript',
+    sectionLabel: 'Interview Prep',
+    subs: [
+      { id: 'dsa-arrays', number: '10.1', title: 'Arrays & Hashing' },
+      { id: 'dsa-two-pointers', number: '10.2', title: 'Two Pointers' },
+      { id: 'dsa-sliding-window', number: '10.3', title: 'Sliding Window' },
+      { id: 'dsa-stack', number: '10.4', title: 'Stack' },
+      { id: 'dsa-binary-search', number: '10.5', title: 'Binary Search' },
+      { id: 'dsa-linked-list', number: '10.6', title: 'Linked List' },
+      { id: 'dsa-trees', number: '10.7', title: 'Trees' },
+      { id: 'dsa-graphs', number: '10.8', title: 'Graphs' },
+      { id: 'dsa-dp', number: '10.9', title: 'Dynamic Programming' },
+    ],
+  },
 ];

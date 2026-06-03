@@ -28,7 +28,11 @@ export default function CodeBlock({ filename, language, children }) {
       )}
       <pre className={filename ? 'has-header' : ''}>
         {language && <span className="lang-tag">{language}</span>}
-        <code dangerouslySetInnerHTML={{ __html: children }} />
+        {typeof children === 'string' && children.includes('<span class=') ? (
+          <code dangerouslySetInnerHTML={{ __html: children }} />
+        ) : (
+          <code>{children}</code>
+        )}
       </pre>
     </div>
   );
