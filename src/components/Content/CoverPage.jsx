@@ -21,6 +21,16 @@ const accentMap = {
     btnShadow: 'rgba(109, 179, 63, 0.22)',
     metaLabel: 'Production Ready',
   },
+  amber: {
+    logo: 'spring',
+    badgeBg: 'rgba(217, 119, 6, 0.13)',
+    badgeBorder: 'rgba(217, 119, 6, 0.28)',
+    badgeColor: '#fcd34d',
+    btnBg: '#d97706',
+    btnColor: '#1c1917',
+    btnShadow: 'rgba(217, 119, 6, 0.22)',
+    metaLabel: 'Concept Ready',
+  },
 };
 
 function ReactLogo() {

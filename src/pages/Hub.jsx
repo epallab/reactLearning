@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { chapters } from '../data/chapters';
 import { springBootChapters } from '../data/springBootChapters';
+import { devOpsChapters } from '../data/devOpsChapters';
 import './Hub.css';
 
 const tracks = [
@@ -38,16 +39,16 @@ const tracks = [
     id: 'devops',
     path: '/devops',
     title: 'DevOps',
-    subtitle: 'Coming Soon',
+    subtitle: 'Infrastructure & Ops Guide',
     description:
       'CI/CD pipelines, containerization, orchestration, cloud platforms, monitoring, and infrastructure as code.',
     icon: 'devops',
-    chapters: 0,
-    topics: 0,
+    chapters: devOpsChapters.length,
+    topics: devOpsChapters.reduce((t, c) => t + (c.subs?.length || 0), 0),
     accent: '#f59e0b',
     accentGlow: 'rgba(245, 158, 11, 0.35)',
     gradient: 'linear-gradient(135deg, #1a1408 0%, #2a1f0a 50%, #3a2a0c 100%)',
-    available: false,
+    available: true,
   },
 ];
 
