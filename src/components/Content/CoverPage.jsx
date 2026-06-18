@@ -57,7 +57,7 @@ function SpringLogo() {
 
 const logoComponents = { react: ReactLogo, spring: SpringLogo };
 
-export default function CoverPage({ chapters, config }) {
+export default function CoverPage({ chapters = [], config = {} }) {
   const accent = accentMap[config.accent] || accentMap.cyan;
   const LogoComponent = logoComponents[accent.logo] || ReactLogo;
   const topicCount = chapters.reduce(

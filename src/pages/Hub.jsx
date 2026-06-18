@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { chapters } from '../data/chapters';
 import { springBootChapters } from '../data/springBootChapters';
 import { devOpsChapters } from '../data/devOpsChapters';
+import { systemDesignChapters } from '../data/systemDesignChapters';
 import './Hub.css';
 
 const tracks = [
@@ -50,6 +51,21 @@ const tracks = [
     gradient: 'linear-gradient(135deg, #1a1408 0%, #2a1f0a 50%, #3a2a0c 100%)',
     available: true,
   },
+  {
+    id: 'systemdesign',
+    path: '/system-design',
+    title: 'System Design',
+    subtitle: 'Architect & Engineer',
+    description:
+      'Master the fundamentals of scalability, databases, microservices, architecture patterns and prepare for system design interviews.',
+    icon: 'systemdesign',
+    chapters: systemDesignChapters.length,
+    topics: systemDesignChapters.reduce((t, c) => t + (c.subs?.length || 0), 0),
+    accent: '#8b5cf6',
+    accentGlow: 'rgba(139, 92, 246, 0.35)',
+    gradient: 'linear-gradient(135deg, #170f2e 0%, #251846 50%, #32205c 100%)',
+    available: true,
+  },
 ];
 
 function ReactIcon() {
@@ -91,7 +107,19 @@ function DevOpsIcon() {
   );
 }
 
-const iconMap = { react: ReactIcon, spring: SpringIcon, devops: DevOpsIcon };
+function SystemDesignIcon() {
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="hub-track-icon">
+      <rect x="25" y="25" width="20" height="20" rx="4" fill="none" stroke="#8b5cf6" strokeWidth="3" />
+      <rect x="55" y="25" width="20" height="20" rx="4" fill="none" stroke="#8b5cf6" strokeWidth="3" />
+      <rect x="40" y="55" width="20" height="20" rx="4" fill="none" stroke="#8b5cf6" strokeWidth="3" />
+      <path d="M35 45v5h15v5" fill="none" stroke="#8b5cf6" strokeWidth="2" />
+      <path d="M65 45v5H50v5" fill="none" stroke="#8b5cf6" strokeWidth="2" />
+    </svg>
+  );
+}
+
+const iconMap = { react: ReactIcon, spring: SpringIcon, devops: DevOpsIcon, systemdesign: SystemDesignIcon };
 
 export default function Hub() {
   return (

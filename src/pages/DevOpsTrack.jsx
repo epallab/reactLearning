@@ -31,7 +31,7 @@ export default function DevOpsTrack() {
 
   return (
     <Layout chapters={devOpsChapters} brand={brandConfig}>
-      <CoverPage config={coverConfig} />
+      <CoverPage chapters={devOpsChapters} config={coverConfig} />
       <DOChapter1 />
       <DOChapter2 />
       <DOChapter3 />

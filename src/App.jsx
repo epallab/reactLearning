@@ -3,6 +3,7 @@ import Hub from './pages/Hub';
 import FrontendTrack from './pages/FrontendTrack';
 import BackendTrack from './pages/BackendTrack';
 import DevOpsTrack from './pages/DevOpsTrack';
+import SystemDesignTrack from './pages/SystemDesignTrack';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <Route path="/frontend" element={<FrontendTrack />} />
       <Route path="/backend" element={<BackendTrack />} />
       <Route path="/devops" element={<DevOpsTrack />} />
+      <Route path="/system-design" element={<SystemDesignTrack />} />
     </Routes>
   );
 }
