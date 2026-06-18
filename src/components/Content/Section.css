@@ -1,44 +1,62 @@
 .section {
-  padding: 50px;
-  max-width: 900px;
+  padding: 58px 50px;
+  max-width: var(--content-width);
   margin: 0 auto;
 }
+
 .section-header {
-  margin-bottom: 35px;
-  padding-bottom: 20px;
-  border-bottom: 3px solid;
+  margin-bottom: 34px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
 }
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 84px;
+  height: 3px;
+  border-radius: 3px;
+  background: currentColor;
+}
+
 .section-number {
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 1.6px;
   margin-bottom: 8px;
   display: block;
 }
+
 .section-title {
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 800;
   line-height: 1.2;
   color: var(--text);
+  letter-spacing: 0;
 }
-.theme-blue .section-header { border-color: var(--primary); }
+.theme-blue .section-header,
 .theme-blue .section-number { color: var(--primary); }
-.theme-purple .section-header { border-color: var(--accent); }
+.theme-purple .section-header,
 .theme-purple .section-number { color: var(--accent); }
-.theme-green .section-header { border-color: var(--success); }
+.theme-green .section-header,
 .theme-green .section-number { color: var(--success); }
-.theme-orange .section-header { border-color: var(--warning); }
+.theme-orange .section-header,
 .theme-orange .section-number { color: var(--warning); }
-.theme-red .section-header { border-color: var(--danger); }
+.theme-red .section-header,
 .theme-red .section-number { color: var(--danger); }
-.theme-teal .section-header { border-color: #0d9488; }
-.theme-teal .section-number { color: #0d9488; }
+.theme-teal .section-header,
+.theme-teal .section-number { color: var(--teal); }
 
 /* Subsection styles */
 .subsection {
-  margin-bottom: 35px;
+  margin-bottom: 38px;
+  scroll-margin-top: 28px;
 }
+
 .subsection-title {
   font-size: 20px;
   font-weight: 700;
@@ -49,8 +67,8 @@
   gap: 10px;
 }
 .subsection-title .icon {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -60,9 +78,19 @@
 }
 
 @media (max-width: 768px) {
-  .section { padding: 20px 16px; }
-  .section-title { font-size: 22px; }
-  .subsection-title { font-size: 18px; }
+  .section {
+    padding: 36px 18px;
+  }
+
+  .section-title {
+    font-size: 25px;
+  }
+
+  .subsection-title {
+    font-size: 18px;
+    align-items: flex-start;
+  }
+
   .section-header { margin-bottom: 25px; padding-bottom: 15px; }
   .subsection { margin-bottom: 25px; }
 }

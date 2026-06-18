@@ -1,0 +1,354 @@
+/* ===== Hub Page ===== */
+.hub {
+  min-height: 100vh;
+  background: #070c15;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== Animated Background ===== */
+.hub-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: grid-drift 20s linear infinite;
+  z-index: 0;
+}
+
+@keyframes grid-drift {
+  0%   { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+.hub-bg-glow {
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(97, 218, 251, 0.08) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== Header ===== */
+.hub-header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 680px;
+  margin-bottom: 56px;
+}
+
+.hub-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hub-title {
+  font-size: 56px;
+  font-weight: 900;
+  line-height: 1.08;
+  margin-bottom: 20px;
+  color: #ffffff;
+  letter-spacing: -1px;
+}
+
+.hub-title-gradient {
+  background: linear-gradient(135deg, #61dafb, #6db33f, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hub-subtitle {
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(200, 215, 230, 0.7);
+  margin: 0;
+}
+
+/* ===== Track Cards Grid ===== */
+.hub-tracks {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.hub-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: 16px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hub-card-link:hover {
+  transform: translateY(-6px);
+}
+
+/* ===== Card ===== */
+.hub-card {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 40px 32px 36px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hub-card-link:hover .hub-card {
+  border-color: var(--card-accent);
+  box-shadow: 0 20px 60px var(--card-glow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.hub-card-disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.hub-card-link:has(.hub-card-disabled):hover {
+  transform: none;
+}
+
+.hub-card-link:has(.hub-card-disabled):hover .hub-card {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+/* Card shine effect */
+.hub-card-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 55%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.hub-card-link:hover .hub-card-shine {
+  opacity: 1;
+  animation: shine-slide 1.2s ease forwards;
+}
+
+@keyframes shine-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.hub-card-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Card Icon ===== */
+.hub-card-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.hub-track-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.hub-card-link:hover .hub-track-icon {
+  animation: icon-pulse 0.6s ease;
+}
+
+@keyframes icon-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.hub-card-badge-soon {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+/* ===== Card Text ===== */
+.hub-card-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: #ffffff;
+}
+
+.hub-card-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--card-accent);
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+
+.hub-card-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(200, 215, 230, 0.6);
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+/* ===== Card Stats ===== */
+.hub-card-stats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.hub-card-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(200, 215, 230, 0.65);
+}
+
+.hub-card-stat-value {
+  color: var(--card-accent);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* ===== Card CTA ===== */
+.hub-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: var(--card-accent);
+  color: #070c15;
+  font-size: 14px;
+  font-weight: 800;
+  width: fit-content;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hub-card-cta svg {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  transition: transform 0.2s ease;
+}
+
+.hub-card-link:hover .hub-card-cta svg {
+  transform: translateX(3px);
+}
+
+.hub-card-disabled .hub-card-cta {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(200, 215, 230, 0.5);
+}
+
+/* ===== Footer ===== */
+.hub-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 56px;
+  color: rgba(200, 215, 230, 0.35);
+  font-size: 12px;
+  text-align: center;
+}
+
+.hub-footer p {
+  color: inherit;
+  margin: 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1023px) {
+  .hub-tracks {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+
+  .hub-title {
+    font-size: 40px;
+  }
+
+  .hub {
+    padding: 48px 20px;
+  }
+
+  .hub-card {
+    min-height: auto;
+    padding: 32px 24px 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hub-title {
+    font-size: 32px;
+  }
+
+  .hub-subtitle {
+    font-size: 15px;
+  }
+
+  .hub-header {
+    margin-bottom: 36px;
+  }
+
+  .hub-card-title {
+    font-size: 24px;
+  }
+}

@@ -1,18 +1,22 @@
 .table-wrapper {
   overflow-x: auto;
-  margin: 15px 0 20px;
+  margin: 18px 0 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid var(--border);
+  min-width: 620px;
 }
+
 thead th {
-  background: var(--primary);
-  color: white;
+  background: var(--text);
+  color: var(--surface);
   font-weight: 600;
   padding: 12px 16px;
   text-align: left;
@@ -25,8 +29,10 @@ tbody td {
   border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
 }
+
 tbody tr:nth-child(even) { background: var(--bg-alt); }
 tbody tr:hover { background: var(--primary-light); }
+tbody tr:last-child td { border-bottom: 0; }
 
 @media (max-width: 768px) {
   table {

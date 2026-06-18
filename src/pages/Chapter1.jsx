@@ -1,4 +1,3 @@
-import React from 'react';
 import Section from '../components/Content/Section';
 import Subsection from '../components/Content/Subsection';
 import CodeBlock from '../components/UI/CodeBlock';

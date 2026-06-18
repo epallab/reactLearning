@@ -1,11 +1,16 @@
 import './Footer.css';
 
-export default function Footer() {
+export default function Footer({ chapters, trackName }) {
+  const topicCount = chapters.reduce(
+    (total, chapter) => total + (chapter.subs?.length || 0),
+    0
+  );
+
   return (
-    <div className="doc-footer">
-      <p><strong>React.js Frontend Developer — Comprehensive Guide</strong></p>
-      <p>Covers all key responsibilities, skills, and best practices with 40+ production-ready code examples.</p>
-      <p style={{ marginTop: '10px' }}>Generated June 2026 · React 18+ · ES2024</p>
-    </div>
+    <footer className="doc-footer">
+      <p><strong>{trackName} - Comprehensive Guide</strong></p>
+      <p>{chapters.length} chapters, {topicCount} focused topics, and production-ready examples.</p>
+      <p>Generated June 2026</p>
+    </footer>
   );
 }

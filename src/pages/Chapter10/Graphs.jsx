@@ -1,4 +1,3 @@
-import React from 'react';
 import Subsection from '../../components/Content/Subsection';
 import CodeBlock from '../../components/UI/CodeBlock';
 import InfoBox from '../../components/UI/InfoBox';

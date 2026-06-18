@@ -1,10 +1,11 @@
 .diagram-box {
-  background: var(--bg-alt);
-  border: 2px solid var(--border);
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   padding: 25px;
-  margin: 15px 0 20px;
+  margin: 18px 0 24px;
   text-align: center;
+  box-shadow: var(--shadow-sm);
 }
 .diagram-title {
   font-weight: 700;
@@ -21,8 +22,8 @@
   margin: 10px 0;
 }
 .flow-box {
-  background: var(--bg);
-  border: 2px solid var(--primary);
+  background: var(--bg-alt);
+  border: 1px solid var(--primary);
   border-radius: 8px;
   padding: 10px 18px;
   font-weight: 600;

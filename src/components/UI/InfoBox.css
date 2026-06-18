@@ -1,8 +1,9 @@
 .info-box {
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 18px 22px;
-  margin: 15px 0 20px;
+  margin: 18px 0 22px;
   border-left: 4px solid;
+  box-shadow: var(--shadow-sm);
 }
 .info-box.tip { background: var(--success-light); border-color: var(--success); }
 .info-box.warning { background: var(--warning-light); border-color: var(--warning); }
@@ -21,7 +22,10 @@
 .info-box.note .info-box-title { color: var(--primary); }
 .info-box.important .info-box-title { color: var(--accent); }
 
-.info-box p { margin-bottom: 0; font-size: 13px; }
+.info-box p {
+  margin-bottom: 0;
+  font-size: 14px;
+}
 
 @media (max-width: 768px) {
   .info-box {

@@ -1,9 +1,13 @@
 .doc-footer {
   text-align: center;
-  padding: 40px 50px;
+  padding: 42px 50px 52px;
   color: var(--text-muted);
   font-size: 12px;
   border-top: 1px solid var(--border);
-  max-width: 900px;
+  max-width: var(--content-width);
   margin: 0 auto;
+}
+
+.doc-footer p {
+  margin-bottom: 7px;
 }

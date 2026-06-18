@@ -1,10 +1,30 @@
 /* ===== Progress Bar ===== */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: calc(var(--sidebar-width) + 16px);
+  z-index: 10000;
+  transform: translateY(-140%);
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .progress-bar {
   position: fixed;
   top: 0;
   left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary), var(--accent));
+  background: linear-gradient(90deg, var(--primary), var(--cyan), var(--warning));
   z-index: 9999;
   transition: width 0.15s ease-out;
   border-radius: 0 2px 2px 0;
@@ -14,35 +34,46 @@
 .main-content {
   margin-left: var(--sidebar-width);
   min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(20, 184, 166, 0.05), transparent 420px),
+    var(--bg);
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
 }
 
 /* ===== Back to Top ===== */
 .back-to-top {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--primary);
+  bottom: 28px;
+  right: 28px;
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  background: var(--text);
   color: #ffffff;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   cursor: pointer;
-  font-size: 20px;
-  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.2s ease, background 0.2s ease;
   z-index: 900;
   animation: fadeInUp 0.3s ease;
 }
 
+.back-to-top svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
 .back-to-top:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.45);
+  transform: translateY(-2px);
   background: var(--primary-dark);
 }
 
@@ -62,14 +93,21 @@
   .main-content {
     margin-left: 0;
   }
+
+  .skip-link {
+    left: 76px;
+  }
+
+  .nav-open {
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 600px) {
   .back-to-top {
-    bottom: 20px;
-    right: 20px;
+    bottom: 18px;
+    right: 18px;
     width: 42px;
     height: 42px;
-    font-size: 18px;
   }
 }
